@@ -8,11 +8,11 @@
 
 import UIKit
 
-class AddressListViewCell: UITableViewCell {
-    private var ProjectNmLbl: UILabel!
-    private var ConsultantLbl: UILabel!
-    private var ClientLbl: UILabel!
-    private var StatusLbl: UILabel!
+class EventListViewCell: UITableViewCell {
+    private var EventNmLbl: UILabel!
+    private var VenueNmLbl: UILabel!
+    private var StartLbl: UILabel!
+    private var EndLbl: UILabel!
     
     
     required init?(coder aDecoder: NSCoder) {
@@ -58,18 +58,18 @@ class AddressListViewCell: UITableViewCell {
     @IBOutlet weak var cview: UIView!{
         didSet{
             
-            ProjectNmLbl = UILabel()
-            cview.addSubview(ProjectNmLbl)
+            EventNmLbl = UILabel()
+            cview.addSubview(EventNmLbl)
             
-            ConsultantLbl = UILabel()
-            ConsultantLbl.textAlignment = NSTextAlignment.Left
-            cview.addSubview(ConsultantLbl)
+            VenueNmLbl = UILabel()
+//            ConsultantLbl.textAlignment = NSTextAlignment.Left
+            cview.addSubview(VenueNmLbl)
             
-            ClientLbl = UILabel()
-            cview.addSubview(ClientLbl)
+            StartLbl = UILabel()
+            cview.addSubview(StartLbl)
             
-            StatusLbl = UILabel()
-            cview.addSubview(StatusLbl)
+            EndLbl = UILabel()
+            cview.addSubview(EndLbl)
 
             setDisplaySubViews()
         }
@@ -87,15 +87,10 @@ class AddressListViewCell: UITableViewCell {
         
         let xheight = frame.height
         let xwidth = frame.width - space * 3 - 16
-        ProjectNmLbl.frame  = CGRect(x: 8, y: 0, width: xwidth * 0.36, height: xheight)
-        
-        
-        
-        ClientLbl.frame  = CGRect(x: ProjectNmLbl.frame.origin.x + ProjectNmLbl.frame.width + space, y: 0, width: xwidth * 0.33, height: xheight)
-        
-        ConsultantLbl.frame  = CGRect(x: ClientLbl.frame.origin.x + ClientLbl.frame.width + space, y: 0, width: xwidth * 0.17, height: xheight)
-        
-        StatusLbl.frame  = CGRect(x: ConsultantLbl.frame.origin.x + ConsultantLbl.frame.width + space, y: 0, width: xwidth * 0.14, height: xheight)
+        EventNmLbl.frame  = CGRect(x: 8, y: 0, width: xwidth * 0.4, height: xheight)
+        VenueNmLbl.frame  = CGRect(x: EventNmLbl.frame.origin.x + EventNmLbl.frame.width + space, y: 0, width: xwidth * 0.28, height: xheight)
+        StartLbl.frame  = CGRect(x: VenueNmLbl.frame.origin.x + VenueNmLbl.frame.width + space, y: 0, width: xwidth * 0.16, height: xheight)
+        EndLbl.frame  = CGRect(x: StartLbl.frame.origin.x + StartLbl.frame.width + space, y: 0, width: xwidth * 0.16, height: xheight)
         
         
     }
@@ -121,18 +116,13 @@ class AddressListViewCell: UITableViewCell {
     
    
     
-    var contractInfo: ContractsItem? {
+    var eventInfo: EventItem? {
         didSet{
-            if let item = contractInfo{
-                ProjectNmLbl.text = item.nproject
-                ConsultantLbl.text = item.assignsales1name
-                if item.client2 != "" {
-                ClientLbl.text = (item.client ?? "") + " / " + (item.client2 ?? "")
-                }else{
-                ClientLbl.text = (item.client ?? "")
-                }
-                
-                StatusLbl.text = item.status
+            if let item = eventInfo{
+                EventNmLbl.text = item.eventname
+                StartLbl.text = item.start
+                VenueNmLbl.text = item.venuename
+                EndLbl.text = item.end
             }
         }
     }

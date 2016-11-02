@@ -8,7 +8,7 @@
 
 import UIKit
 
-class AddressListViewHeadView: UIView {
+class EventListViewHeadView: UIView {
     
     var CiaNmLbl: UILabel!
     
@@ -18,10 +18,10 @@ class AddressListViewHeadView: UIView {
     private var StatusLbl: UILabel!
     
     private struct constants{
-        static let ProjectNM = "Project"
-        static let Consultant = "Consultant"
-        static let Client = "Client"
-        static let Status = "Status"
+        static let ProjectNM = "Event Name"
+        static let Consultant = "Start"
+        static let Client = "Venue Name"
+        static let Status = "End"
         static let HeadBackGroudColor = UIColor(red: 204/255.0, green: 204/255.0, blue: 204/255.0, alpha: 1)
     }
     
@@ -82,17 +82,17 @@ class AddressListViewHeadView: UIView {
         let space : CGFloat = 10.0
         
         let xheight = frame.height * 0.5
-        let xy = CiaNmLbl.frame.height
+        let xy = CiaNmLbl.frame.height/2.0
         
         let xwidth = frame.width - space * 3 - 16
-        ProjectNmLbl.frame  = CGRect(x: 8, y: xy, width: xwidth * 0.36, height: xheight)
+        ProjectNmLbl.frame  = CGRect(x: 8, y: xy, width: xwidth * 0.4, height: xheight)
         
         
         
-        ClientLbl.frame  = CGRect(x: ProjectNmLbl.frame.origin.x + ProjectNmLbl.frame.width + space, y: xy, width: xwidth * 0.33, height: xheight)
+        ClientLbl.frame  = CGRect(x: ProjectNmLbl.frame.origin.x + ProjectNmLbl.frame.width + space, y: xy, width: xwidth * 0.28, height: xheight)
         
-        ConsultantLbl.frame  = CGRect(x: ClientLbl.frame.origin.x + ClientLbl.frame.width + space, y: xy, width: xwidth * 0.17, height: xheight)
-        StatusLbl.frame  = CGRect(x: ConsultantLbl.frame.origin.x + ConsultantLbl.frame.width + space, y: xy, width: xwidth * 0.14, height: xheight)
+        ConsultantLbl.frame  = CGRect(x: ClientLbl.frame.origin.x + ClientLbl.frame.width + space, y: xy, width: xwidth * 0.16, height: xheight)
+        StatusLbl.frame  = CGRect(x: ConsultantLbl.frame.origin.x + ConsultantLbl.frame.width + space, y: xy, width: xwidth * 0.16, height: xheight)
     }
     
 }

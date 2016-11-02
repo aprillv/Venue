@@ -25,6 +25,7 @@ struct CConstants{
     static let UserInfoRememberMe :  String = "Login Remember Me"
     static let UserInfoEmail :  String = "Login Email"
     static let UserInfoName :  String = "Logined User Name"
+    static let UserInfoDisplayName :  String = "Logined User Display Name"
     static let UserInfoPwd :  String = "Login Password"
     static let UserInfoIsContract :  String = "is contract"
     static let UserInfoPrintModel : String = "last print files"
@@ -42,7 +43,7 @@ struct CConstants{
     static let CheckImgNm = "check"
     static let SuccessImageNm = "checkmark"
     
-    static let SegueToAddressList :  String = "adressList"
+    static let SegueToEventsList :  String = "event List"
     static let SegueToPrintPdf : String = "tofile"
 //    static let SegueToSignaturePdf : String = "pdfSignature"
 //    static let SegueToThridPartyFinacingAddendumPdf : String = "pdfThridPartyFinacingAddendum"
@@ -64,10 +65,14 @@ struct CConstants{
     static let Administrator = "roberto@buildersaccess.com"
     
     static let LoggedUserNameKey : String = "LoggedUserNameInDefaults"
-    static let InstallAppLink : String = "itms-services://?action=download-manifest&url=https://www.buildersaccess.com/iphone/contract.plist"
-    static let ServerURL : String = "https://contractssl.buildersaccess.com/"
+    static let InstallAppLink : String = "itms-services://?action=download-manifest&url=https://www.buildersaccess.com/iphone/venue.plist"
+    static let ServerURL : String = "http://venueappservice.buildersaccess.com/"
     //validate login and get address list
-    static let LoginServiceURL: String = "bacontract_login.json"
+    static let LoginServiceURL: String = "bavenue_login.json"
+    
+    //Get
+    static let EventListServiceURL: String = "bavenue_login2.json"
+    
     //check app version
     static let CheckUpdateServiceURL: String = "bacontract_version.json"
     //get contract signature

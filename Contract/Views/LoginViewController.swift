@@ -185,8 +185,8 @@ class LoginViewController: BaseViewController, UITextFieldDelegate {
     }
     
     @IBAction func Login(sender: UIButton) {
-        checkUpate(sender)
-        
+//        checkUpate(sender)
+         self.doLogin(sender)
     }
     
     private func disAblePageControl(){
@@ -254,26 +254,43 @@ class LoginViewController: BaseViewController, UITextFieldDelegate {
                 Alamofire.request(.POST, CConstants.ServerURL + CConstants.LoginServiceURL, parameters: a).responseJSON{ (response) -> Void in
 //                    self.clearNotice()
                     hud.hide(true)
+//                     print(response.result.value)
 //                    self.progressBar?.dismissViewControllerAnimated(true){ () -> Void in
 //                        self.spinner?.stopAnimating()
                         if response.result.isSuccess {
 //                            print(response.result.value)
                             if let rtnValue = response.result.value as? [String: AnyObject]{
-                                let rtn = Contract(dicInfo: rtnValue)
-                                
-                                
+                                let loginUser = LoginedUserInfo(dicInfo: rtnValue)
                                 self.toEablePageControl()
-                                
-                                if rtn.activeyn == 1{
+                                if loginUser.found == "1" {
                                     let userinfo = NSUserDefaults.standardUserDefaults()
-                                    userinfo.setBool(true, forKey: CConstants.UserInfoIsContract)
-                                    userinfo.setObject(rtn.username, forKey: CConstants.UserInfoName)
+                                    userinfo.setObject(loginUser.sname, forKey: CConstants.UserInfoDisplayName)
+                                    userinfo.setObject(loginUser.username, forKey: CConstants.UserInfoName)
+                                    
                                     self.saveEmailAndPwdToDisk(email: email!, password: password!)
-                                    self.loginResult = rtn
-                                    self.performSegueWithIdentifier(CConstants.SegueToAddressList, sender: sender)
+                                    
+                                    self.performSegueWithIdentifier(CConstants.SegueToEventsList, sender: sender)
+
                                 }else{
-                                    self.PopMsgValidationWithJustOK(msg: constants.WrongEmailOrPwdMsg, txtField: nil)
+                                
                                 }
+//                                var eventlist = [EventItem]()
+//                                if let events = rtnValue["events"] as? [[String: String]]{
+//                                    if events.count > 0 {
+//                                        
+//                                        for evnt in events {
+//                                            let aevent = EventItem(dicInfo: evnt)
+//                                            eventlist.append(aevent)
+//                                        }
+//                                        
+//                                    }
+//                                }
+                                
+                                
+                                
+                                
+                                
+                                
                             }else{
                                 self.toEablePageControl()
                                 self.PopServerError()
@@ -325,23 +342,7 @@ class LoginViewController: BaseViewController, UITextFieldDelegate {
             }
         }
     }
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if let identifier = segue.identifier {
-            switch identifier {
-                case CConstants.SegueToAddressList:
-                    if let addressListView = segue.destinationViewController as? AddressListViewController{
-                        if let a = sender as? UIButton {
-                            addressListView.tableTag = a.currentTitle!.hasPrefix("Sign") ? 2 : 1
-                        }
-                        addressListView.AddressListOrigin = loginResult?.contracts
-                    }
-                break
-            default:
-                break
-            }
-        }
-        
-    }
+    
     
     
 //    func removeHud() {
