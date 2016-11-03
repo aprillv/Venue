@@ -44,6 +44,8 @@ struct CConstants{
     static let SuccessImageNm = "checkmark"
     
     static let SegueToEventsList :  String = "event List"
+    static let SegueToContractList : String = "Go to Contract List"
+    static let SegueToPrintContract = "GoToPrintContract"
     static let SegueToPrintPdf : String = "tofile"
 //    static let SegueToSignaturePdf : String = "pdfSignature"
 //    static let SegueToThridPartyFinacingAddendumPdf : String = "pdfThridPartyFinacingAddendum"
@@ -73,6 +75,10 @@ struct CConstants{
     //Get
     static let EventListServiceURL: String = "bavenue_login2.json"
     
+    static let ContractListServiceURL : String = "bavenue_contractList.json"
+    
+    static let ContractDetailServiceURL : String = "bavenue_contractdetail.json"
+    
     //check app version
     static let CheckUpdateServiceURL: String = "bacontract_version.json"
     //get contract signature
@@ -93,7 +99,7 @@ struct CConstants{
     static let UploadCheckedPhotoURL = "bacontract_UploadCheckedPhoto.json"
    
     
-    static let PdfFileNameContract = "BaseContract"
+    static let PdfFileNameContract = "Venue License Agreement (Form)"
     static let PdfFielNameContract_Austin = "BaseContract_Austin"
     static let PdfFileNameThirdPartyFinancingAddendum = "Third_Party_Financing_Addendum_TREC"
     static let PdfFileNameClosingMemo = "ClosingMemo"

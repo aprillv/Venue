@@ -247,11 +247,12 @@
                         <outlet property="rememberMeSwitch" destination="7wk-au-yeB" id="4ex-RG-45g"/>
                         <outlet property="signInBtn" destination="CHL-FU-tQd" id="dcz-Ul-1Hs"/>
                         <segue destination="dHY-yp-nIM" kind="show" identifier="event List" id="483-ya-sV7"/>
+                        <segue destination="8tv-aG-ZCq" kind="show" identifier="Go to Contract List" id="SEo-Pc-kH2"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1070" y="-1234"/>
+            <point key="canvasLocation" x="1210" y="-1114"/>
         </scene>
         <!--Venue Events-->
         <scene sceneID="TbO-r3-5Ld">
@@ -556,7 +557,7 @@
                                 </constraints>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="cellIdentifier" id="7OE-yE-b25" customClass="PrintModelTableViewCell" customModule="Venue" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="28" width="1000" height="44"/>
+                                        <rect key="frame" x="0.0" y="28" width="1001" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="7OE-yE-b25" id="NCn-Z4-gyK">
                                             <frame key="frameInset" width="420" height="43"/>
@@ -606,7 +607,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="lastCell" id="wfK-bF-UPf" customClass="AddressListModelLastCell" customModule="Venue" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="72" width="1000" height="44"/>
+                                        <rect key="frame" x="0.0" y="72" width="1001" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="wfK-bF-UPf" id="03m-bc-Uu2">
                                             <frame key="frameInset" width="420" height="43"/>
@@ -640,7 +641,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="firstCell" id="YbJ-qW-JOT">
-                                        <rect key="frame" x="0.0" y="116" width="1000" height="44"/>
+                                        <rect key="frame" x="0.0" y="116" width="1001" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="YbJ-qW-JOT" id="pTJ-xI-Cta">
                                             <frame key="frameInset" width="420" height="43"/>
@@ -1131,7 +1132,7 @@
                                         </constraints>
                                         <prototypes>
                                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="emailCell" id="SDD-ql-nf1">
-                                                <rect key="frame" x="0.0" y="28" width="1000" height="44"/>
+                                                <rect key="frame" x="0.0" y="28" width="1001" height="44"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="SDD-ql-nf1" id="gjK-6q-GW5">
                                                     <frame key="frameInset" width="448" height="43"/>
@@ -1395,7 +1396,7 @@
                         <viewControllerLayoutGuide type="bottom" id="nJf-ja-y0h"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="zL2-B3-yXz">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <webView contentMode="scaleAspectFit" scalesPageToFit="YES" paginationMode="topToBottom" translatesAutoresizingMaskIntoConstraints="NO" id="7oP-5y-CNv">
@@ -1779,6 +1780,131 @@
             </objects>
             <point key="canvasLocation" x="3741" y="-1475"/>
         </scene>
+        <!--Venue Contracts-->
+        <scene sceneID="qNF-Lc-GSE">
+            <objects>
+                <tableViewController id="8tv-aG-ZCq" customClass="ContractListViewController" customModule="Venue" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="X1p-Bo-dk4">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <view key="tableHeaderView" contentMode="scaleToFill" id="6kP-Ck-TKk">
+                            <rect key="frame" x="0.0" y="64" width="375" height="44"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <subviews>
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sKu-gG-rYR">
+                                    <color key="backgroundColor" red="0.4431372549" green="0.4431372549" blue="0.4431372549" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="1" id="ffU-kd-jL2"/>
+                                    </constraints>
+                                </view>
+                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="gFi-Hq-Gkm">
+                                    <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="29" id="lZB-9p-W7n"/>
+                                    </constraints>
+                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                    <textInputTraits key="textInputTraits"/>
+                                </textField>
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aVb-wr-lw2">
+                                    <color key="backgroundColor" red="0.4431372549" green="0.4431372549" blue="0.4431372549" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </view>
+                            </subviews>
+                            <color key="backgroundColor" red="0.93333333330000001" green="0.93333333330000001" blue="0.93333333330000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="trailing" secondItem="sKu-gG-rYR" secondAttribute="trailing" id="97Y-Sx-RnG"/>
+                                <constraint firstAttribute="bottom" secondItem="aVb-wr-lw2" secondAttribute="bottom" id="9cz-Rb-THW"/>
+                                <constraint firstAttribute="trailing" secondItem="gFi-Hq-Gkm" secondAttribute="trailing" constant="8" id="LeC-Zz-DDS"/>
+                                <constraint firstItem="aVb-wr-lw2" firstAttribute="height" secondItem="sKu-gG-rYR" secondAttribute="height" id="QM5-XM-Pvj"/>
+                                <constraint firstAttribute="trailing" secondItem="aVb-wr-lw2" secondAttribute="trailing" id="ViD-eq-5bK"/>
+                                <constraint firstItem="aVb-wr-lw2" firstAttribute="leading" secondItem="6kP-Ck-TKk" secondAttribute="leading" id="WcI-0R-qAU"/>
+                                <constraint firstItem="gFi-Hq-Gkm" firstAttribute="centerX" secondItem="6kP-Ck-TKk" secondAttribute="centerX" id="ZOC-Qd-DTX"/>
+                                <constraint firstItem="gFi-Hq-Gkm" firstAttribute="centerY" secondItem="6kP-Ck-TKk" secondAttribute="centerY" id="dAC-pf-6Cc"/>
+                                <constraint firstItem="gFi-Hq-Gkm" firstAttribute="top" secondItem="sKu-gG-rYR" secondAttribute="bottom" constant="6" id="nBt-P0-zlf"/>
+                                <constraint firstItem="gFi-Hq-Gkm" firstAttribute="centerY" secondItem="sKu-gG-rYR" secondAttribute="centerY" id="nLt-NL-DKT"/>
+                                <constraint firstItem="gFi-Hq-Gkm" firstAttribute="leading" secondItem="6kP-Ck-TKk" secondAttribute="leading" constant="8" id="veu-AE-pZP"/>
+                                <constraint firstItem="gFi-Hq-Gkm" firstAttribute="top" secondItem="6kP-Ck-TKk" secondAttribute="top" constant="8" id="w2z-tb-R6C"/>
+                                <constraint firstItem="sKu-gG-rYR" firstAttribute="leading" secondItem="6kP-Ck-TKk" secondAttribute="leading" id="xfb-4T-uSA"/>
+                                <constraint firstItem="sKu-gG-rYR" firstAttribute="top" secondItem="6kP-Ck-TKk" secondAttribute="top" id="zNv-Dg-c5j"/>
+                            </constraints>
+                            <variation key="default">
+                                <mask key="constraints">
+                                    <exclude reference="nLt-NL-DKT"/>
+                                    <exclude reference="nBt-P0-zlf"/>
+                                    <exclude reference="ZOC-Qd-DTX"/>
+                                    <exclude reference="w2z-tb-R6C"/>
+                                </mask>
+                            </variation>
+                        </view>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="Contracts Cell Identifier" id="u5V-dJ-Nm5" customClass="ContractListCell" customModule="Venue" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="136" width="375" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="u5V-dJ-Nm5" id="zF7-wF-wje">
+                                    <frame key="frameInset" width="375" height="44"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="cview" destination="zF7-wF-wje" id="vwj-jw-cmB"/>
+                                </connections>
+                            </tableViewCell>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="AddressDraft Cell Identifier" id="Nx0-tr-ftM" customClass="AddressDraftListViewCell" customModule="Venue" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="180" width="375" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Nx0-tr-ftM" id="7LL-d9-yvc">
+                                    <frame key="frameInset" width="375" height="44"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="cview" destination="7LL-d9-yvc" id="VIl-PE-o6L"/>
+                                </connections>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="8tv-aG-ZCq" id="B5X-fA-c5u"/>
+                            <outlet property="delegate" destination="8tv-aG-ZCq" id="Uy2-3Y-KTN"/>
+                        </connections>
+                    </tableView>
+                    <toolbarItems>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="wJe-vT-8Q1"/>
+                        <barButtonItem enabled="NO" title="Copyright © 2016 All Rights Reserved" id="0sO-MG-pGy"/>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="Doy-Dj-v2t"/>
+                    </toolbarItems>
+                    <navigationItem key="navigationItem" title="Venue Contracts" id="nmw-cf-jxs">
+                        <barButtonItem key="leftBarButtonItem" tag="2" title="Logout" id="xsC-mh-O55">
+                            <connections>
+                                <action selector="Logout:" destination="8tv-aG-ZCq" id="pXn-Kv-vxv"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" style="plain" id="E5k-2q-s2q">
+                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="pwP-mL-kkf">
+                                <rect key="frame" x="194" y="8" width="165" height="28"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Filter" image="filter">
+                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                            </button>
+                        </barButtonItem>
+                    </navigationItem>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
+                    <refreshControl key="refreshControl" opaque="NO" multipleTouchEnabled="YES" contentMode="center" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" id="rpS-rb-dje">
+                        <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <connections>
+                            <action selector="refreshAddressList:" destination="8tv-aG-ZCq" eventType="valueChanged" id="4TS-ZY-BbC"/>
+                        </connections>
+                    </refreshControl>
+                    <connections>
+                        <outlet property="switchItem" destination="xsC-mh-O55" id="tLy-vo-SZb"/>
+                        <outlet property="txtField" destination="gFi-Hq-Gkm" id="f1K-I3-WqI"/>
+                        <outlet property="viewHeight" destination="ffU-kd-jL2" id="njg-1s-mkl"/>
+                        <segue destination="LV9-aA-wQE" kind="show" identifier="GoToPrintContract" id="4Ld-9d-S98"/>
+                    </connections>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="K1j-3n-8VP" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2194" y="-1063"/>
+        </scene>
     </scenes>
     <resources>
         <image name="add" width="36" height="36"/>
@@ -1791,7 +1917,8 @@
         <image name="send_file" width="24" height="30"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="OP4-Gf-h3Z"/>
+        <segue reference="4Ld-9d-S98"/>
+        <segue reference="piF-a3-pSe"/>
         <segue reference="Mt6-87-XR6"/>
     </inferredMetricsTieBreakers>
 </document>

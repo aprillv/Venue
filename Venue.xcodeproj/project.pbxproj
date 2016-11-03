@@ -61,6 +61,11 @@
 		113CB5E21BFF06E90081FDE7 /* EventListViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 113CB5E11BFF06E90081FDE7 /* EventListViewCell.swift */; };
 		113CB5E41BFF0CBF0081FDE7 /* ContractRequestItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 113CB5E31BFF0CBF0081FDE7 /* ContractRequestItem.swift */; };
 		113CB5E61BFF11EC0081FDE7 /* ContractSignature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 113CB5E51BFF11EC0081FDE7 /* ContractSignature.swift */; };
+		114934861DCB100C005FBBEC /* Venue License Agreement (Form).pdf in Resources */ = {isa = PBXBuildFile; fileRef = 114934851DCB100C005FBBEC /* Venue License Agreement (Form).pdf */; };
+		114934881DCB1131005FBBEC /* ContractListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114934871DCB1131005FBBEC /* ContractListViewController.swift */; };
+		1149348A1DCB1404005FBBEC /* VenueContractListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114934891DCB1404005FBBEC /* VenueContractListItem.swift */; };
+		1149348C1DCB1723005FBBEC /* ContractListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1149348B1DCB1723005FBBEC /* ContractListCell.swift */; };
+		1149348E1DCB1CE3005FBBEC /* ContractDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1149348D1DCB1CE3005FBBEC /* ContractDetail.swift */; };
 		115338C21C27DE5900E1B65A /* PDFBaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 115338C11C27DE5900E1B65A /* PDFBaseViewController.swift */; };
 		115338CA1C27F59E00E1B65A /* ContractPDFBaseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 115338C91C27F59E00E1B65A /* ContractPDFBaseModel.swift */; };
 		1157B3C41C34C68D008ED758 /* ContractDesignCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1157B3C31C34C68D008ED758 /* ContractDesignCenter.swift */; };
@@ -211,6 +216,11 @@
 		113CB5E11BFF06E90081FDE7 /* EventListViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventListViewCell.swift; sourceTree = "<group>"; };
 		113CB5E31BFF0CBF0081FDE7 /* ContractRequestItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContractRequestItem.swift; sourceTree = "<group>"; };
 		113CB5E51BFF11EC0081FDE7 /* ContractSignature.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContractSignature.swift; sourceTree = "<group>"; };
+		114934851DCB100C005FBBEC /* Venue License Agreement (Form).pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = "Venue License Agreement (Form).pdf"; sourceTree = "<group>"; };
+		114934871DCB1131005FBBEC /* ContractListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContractListViewController.swift; sourceTree = "<group>"; };
+		114934891DCB1404005FBBEC /* VenueContractListItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VenueContractListItem.swift; sourceTree = "<group>"; };
+		1149348B1DCB1723005FBBEC /* ContractListCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContractListCell.swift; sourceTree = "<group>"; };
+		1149348D1DCB1CE3005FBBEC /* ContractDetail.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContractDetail.swift; sourceTree = "<group>"; };
 		115338C11C27DE5900E1B65A /* PDFBaseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PDFBaseViewController.swift; sourceTree = "<group>"; };
 		115338C91C27F59E00E1B65A /* ContractPDFBaseModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContractPDFBaseModel.swift; sourceTree = "<group>"; };
 		1157B3C31C34C68D008ED758 /* ContractDesignCenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContractDesignCenter.swift; sourceTree = "<group>"; };
@@ -462,6 +472,7 @@
 				1108B2781BFC6133004B5D48 /* BaseViewController.swift */,
 				115338C11C27DE5900E1B65A /* PDFBaseViewController.swift */,
 				1108B2741BFC55CF004B5D48 /* LoginViewController.swift */,
+				114934871DCB1131005FBBEC /* ContractListViewController.swift */,
 				1176D20E1BFDC67C001C1C3E /* EventsListViewController.swift */,
 				111E20371C7BF275004D43D8 /* PDFPrintViewController.swift */,
 				117F9B6A1C756706008B26D5 /* PrintModelTableViewController.swift */,
@@ -475,6 +486,7 @@
 				11A107411CE18AD900B00328 /* GoToFileViewController.swift */,
 				1186B81F1D0F9B5F00D0C91C /* EmailAfterApprovedViewController.swift */,
 				11EDB0C91D151ACB0070BE3E /* EmailContractToBuyerViewController.swift */,
+				1149348B1DCB1723005FBBEC /* ContractListCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -482,6 +494,7 @@
 		110CE6AD1C0439A70096E630 /* pdf */ = {
 			isa = PBXGroup;
 			children = (
+				114934851DCB100C005FBBEC /* Venue License Agreement (Form).pdf */,
 				11E34BD31D7FAE2000B64636 /* AddendumA_Austin.pdf */,
 				11F9FBC71D7E572F00A90664 /* AddendumD.pdf */,
 				11F9FBC81D7E572F00A90664 /* AddendumA.pdf */,
@@ -538,6 +551,8 @@
 				11EEF03A1CCF5679006422ED /* SignatrureFields.swift */,
 				11C4C8441DC976BA00B566EF /* EventItem.swift */,
 				1100B33E1DC9C04B000F6785 /* LoginedUserInfo.swift */,
+				114934891DCB1404005FBBEC /* VenueContractListItem.swift */,
+				1149348D1DCB1CE3005FBBEC /* ContractDetail.swift */,
 			);
 			name = Model;
 			path = Views/Model;
@@ -639,6 +654,7 @@
 				11632BF61CD2DF2F00B70C44 /* INFORMATION_ABOUT_BROKERAGE_SERVICES2.pdf in Resources */,
 				1164A18A1CCDDF7E005A2A69 /* AddendumC2.pdf in Resources */,
 				116C2C891CCCB72400B07865 /* trec_36-8.pdf in Resources */,
+				114934861DCB100C005FBBEC /* Venue License Agreement (Form).pdf in Resources */,
 				1170C8D81CD1F42500E81BCC /* Hoa_Checklist.pdf in Resources */,
 				1170C8D11CD1F26300E81BCC /* EXHIBIT_A.pdf in Resources */,
 				11CDE3671D59E8D300AF7EDD /* BaseContract.pdf in Resources */,
@@ -717,6 +733,7 @@
 				11633BA21C27DA8E00C11A20 /* ContractClosingMemo.swift in Sources */,
 				111293D91CDAE00300B0DAFC /* SaveAndEmailViewController.swift in Sources */,
 				11D911001C1AB33D00CD018A /* ContractAddendumC.swift in Sources */,
+				114934881DCB1131005FBBEC /* ContractListViewController.swift in Sources */,
 				1108B2651BFC4047004B5D48 /* PDFForm.m in Sources */,
 				111E20401C7C5F3D004D43D8 /* SetDotValue.swift in Sources */,
 				1108B2671BFC4047004B5D48 /* PDFPage.m in Sources */,
@@ -733,6 +750,7 @@
 				1108B2681BFC4047004B5D48 /* PDFObjectParser.m in Sources */,
 				111E20381C7BF275004D43D8 /* PDFPrintViewController.swift in Sources */,
 				11A626351CD989F500B91EBE /* FilterViewController.swift in Sources */,
+				1149348C1DCB1723005FBBEC /* ContractListCell.swift in Sources */,
 				11EEF03F1CCF6145006422ED /* toolpdf.swift in Sources */,
 				1108B25D1BFC4047004B5D48 /* PDFArray.m in Sources */,
 				1108B26C1BFC4047004B5D48 /* PDFFormImageView.m in Sources */,
@@ -747,9 +765,11 @@
 				1108B25F1BFC4047004B5D48 /* PDFName.m in Sources */,
 				11EDB0CA1D151ACB0070BE3E /* EmailContractToBuyerViewController.swift in Sources */,
 				1108B26D1BFC4047004B5D48 /* PDFFormSignatureField.m in Sources */,
+				1149348A1DCB1404005FBBEC /* VenueContractListItem.swift in Sources */,
 				11A50B421C783BFC0017AA53 /* AddressListModelViewController.swift in Sources */,
 				113CB5BC1BFEE2D80081FDE7 /* Contract.swift in Sources */,
 				1114C79C1C812AE900924A21 /* AppDelegate.swift in Sources */,
+				1149348E1DCB1CE3005FBBEC /* ContractDetail.swift in Sources */,
 				1108B26B1BFC4047004B5D48 /* PDFFormChoiceField.m in Sources */,
 				1108B26E1BFC4047004B5D48 /* PDFFormTextField.m in Sources */,
 				11D911021C1AB36000CD018A /* ContractAddendumCItem.swift in Sources */,

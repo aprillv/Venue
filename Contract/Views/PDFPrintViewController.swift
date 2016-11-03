@@ -12,6 +12,9 @@ import MessageUI
 import MBProgressHUD
 
 class PDFPrintViewController: PDFBaseViewController, UIScrollViewDelegate, PDFViewDelegate, SubmitForApproveViewControllerDelegate, SaveAndEmailViewControllerDelegate,UIImagePickerControllerDelegate, UINavigationControllerDelegate, GoToFileDelegate, EmailContractToBuyerViewControllerDelegate{
+    
+    
+    var idContract : String?
     private struct constants{
         static let operationMsg = "Are you sure you want to take photo of the check again?"
         static let segueToSendEmailAfterApproved = "showSendEmail"
@@ -23,6 +26,360 @@ class PDFPrintViewController: PDFBaseViewController, UIScrollViewDelegate, PDFVi
         static let operationSellerGoToSign = "Seller Go To Sign"
         
     }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+//        self.getSignature()
+        return
+        setSendItema()
+        
+        //        var showBuyer1 : Bool?
+        //        if self.contractPdfInfo?.buyer1SignFinishedyn == 1 || self.contractPdfInfo?.verify_code != ""{
+        //            showBuyer1 = false
+        //        }else{
+        //            let (n, _) = tp.CheckBuyerFinish(self.fileDotsDic, documents: self.documents, isbuyer1: true)
+        //            showBuyer1 = !n
+        //        }
+        
+        
+        
+        let userinfo = NSUserDefaults.standardUserDefaults()
+        userinfo.setInteger(0, forKey: "ClearDraftInfo")
+        if userinfo.boolForKey(CConstants.UserInfoIsContract) {
+            self.navigationItem.title = "Contract"
+            
+            if filesArray != nil {
+                switch filesArray![0]{
+                case CConstants.ActionTitleAddendumC:
+                    self.pageChanged( 6)
+                case CConstants.ActionTitleEXHIBIT_B:
+                    self.pageChanged( 3)
+                case CConstants.ActionTitleINFORMATION_ABOUT_BROKERAGE_SERVICES,
+                     CConstants.ActionTitleAddendumD,
+                     CConstants.ActionTitleAddendumE,
+                     CConstants.ActionTitleHoaChecklist:
+                    self.pageChanged( 1)
+                case CConstants.ActionTitleAddendumA:
+                    self.pageChanged( 2)
+                case CConstants.ActionTitleEXHIBIT_C:
+                    self.pageChanged( 4)
+                case CConstants.ActionTitleDesignCenter:
+                    self.pageChanged( 5)
+                default:
+                    break
+                }
+            }
+        }else{
+            self.navigationItem.title = "Draft"
+            //            buyer1Date.title = ""
+            //            buyer2Date.title = ""
+            //            buyer1Item.title = ""
+            //            buyer2Item.title = ""
+            //            seller1Item.title = ""
+            //            seller2Item.title = ""
+        }
+        
+        
+        if filesArray?.count == 1 {
+            self.title = filesArray![0]
+        }
+        
+        
+    }
+    
+    var ContractData : ContractDetail?{
+        didSet{
+            if let data = ContractData {
+                if let dots = self.pdfView?.pdfWidgetAnnotationViews {
+//                    print(dots)
+                    for d in dots {
+                        
+                        if let c = d as? PDFWidgetAnnotationView{
+//                            print("case \"\(c.xname)\":")
+//                            print("    c.value = data.\(c.xname)")
+                            switch c.xname {
+                            case "By":
+                                c.value = data.By
+                            case "Date_2":
+                                c.value = data.Date_2
+                            case "LICENSEE":
+                                c.value = data.LICENSEE
+                            case "Date_3":
+                                c.value = data.Date_3
+                            case "By_2":
+                                c.value = data.By_2
+                            case "Date_4":
+                                c.value = data.Date_4
+                            case "licensor":
+                                c.value = data.licensor
+                            case "licensor":
+                                c.value = data.licensor
+                            case "licensee":
+                                c.value = data.licensee
+                            case "effectiveDate":
+                                c.value = data.effectiveDate
+                            case "venueName":
+                                c.value = data.venueName
+                            case "venueAddress":
+                                c.value = data.venueAddress
+                            case "eventName":
+                                c.value = data.eventName
+                            case "eventDateEnd":
+                                c.value = data.eventDateEnd
+                            case "licenseFeeS":
+                                c.value = data.licenseFeeS
+                            case "licenseFeeN":
+                                c.value = data.licenseFeeN
+                            case "depositFeeS":
+                                c.value = data.depositFeeS
+                            case "depositFeeN":
+                                c.value = data.depositFeeN
+                            case "eventDateStart":
+                                c.value = data.eventDateStart
+                            case "contractDateStart":
+                                c.value = data.contractDateStart
+                            case "contractDateEnd":
+                                c.value = data.contractDateEnd
+                            case "firstPaymentDate":
+                                c.value = data.firstPaymentDate
+                            case "lastPaymentDate":
+                                c.value = data.lastPaymentDate
+                            case "paymentSpanS":
+                                c.value = data.paymentSpanS
+                            case "paymentSpanN":
+                                c.value = data.paymentSpanN
+                            case "cancellationDayS":
+                                c.value = data.cancellationDayS
+                            case "cancellationDayN":
+                                c.value = data.cancellationDayN
+                            case "insuranceS":
+                                c.value = data.insuranceS
+                            case "insuranceN":
+                                c.value = data.insuranceN
+                            case "ticketAmount":
+                                c.value = data.ticketAmount
+                            default:
+                                break
+                            }
+                        }
+                        
+                    }
+                }
+            }
+        }
+    }
+    
+    func getSignature(){
+        //        print(["idcontract1" : self.contractInfo!.idnumber!])
+        let userInfo = NSUserDefaults.standardUserDefaults()
+        let email = userInfo.valueForKey(CConstants.UserInfoEmail) as? String ?? ""
+        let password = userInfo.valueForKey(CConstants.UserInfoPwd) as? String ?? ""
+        
+        Alamofire.request(.POST,
+            CConstants.ServerURL + CConstants.ContractDetailServiceURL,
+            parameters: ["email" :email, "password" : password, "idcontract" : self.idContract ?? ""]).responseJSON{ (response) -> Void in
+                //                hud.hide(true)
+                if response.result.isSuccess {
+//                    print(response.result.value)
+                    if let rtnValue = response.result.value as? [String: AnyObject]{
+                        //                       print(rtnValue)
+                        self.ContractData = ContractDetail(dicInfo: rtnValue)
+                        //                        if rtn.initial_b1yn! != "" {
+                        ////                             print(rtn.initial_b1yn)
+                        //                            var brokerb1 = false
+                        //                            var brokerb2 = false
+                        //                            if rtn.brokerInfoPage2 != "" {
+                        //                                if rtn.brokerInfoPage2!.containsString("|") {
+                        //                                    let cc = rtn.brokerInfoPage2!.componentsSeparatedByString("|")
+                        //                                    brokerb1 = (cc[0] == "1")
+                        //                                    brokerb2 = (cc[1] == "1")
+                        //                                }else{
+                        //                                    brokerb1 = (rtn.brokerInfoPage2! == "1")
+                        //                                }
+                        //                            }
+                        //                            self.initial_b1yn = self.getArr(rtn.initial_b1yn!)
+                        //                            self.initial_b2yn = self.getArr(rtn.initial_b2yn!)
+                        //                            self.initial_s1yn = self.getArr(rtn.initial_s1yn!)
+                        //                            self.signature_b1yn = self.getArr(rtn.signature_b1yn!)
+                        //                            self.signature_b2yn = self.getArr(rtn.signature_b2yn!)
+                        //                            self.signature_s1yn = self.getArr(rtn.signature_s1yn!)
+                        //
+                        //                            self.initial_b1 = rtn.initial_b1
+                        //                            self.initial_b2 = rtn.initial_b2
+                        //                            self.signature_b1 = rtn.signature_b1
+                        //                            self.signature_b2 = rtn.signature_b2
+                        //                            self.initial_s1 = rtn.initial_s1
+                        //                            self.signature_s1 = rtn.signature_s1
+                        //
+                        //                            if rtn.initial_index == "" {
+                        //                                let exhibitB = ["0"]
+                        //                                var hoapage1 = [String]()
+                        //                                var hoapage2 = [String]()
+                        //                                var hoapage3 = [String]()
+                        //                                for _ in 0...13{
+                        //                                    hoapage1.append("0")
+                        //                                }
+                        //                                for _ in 0...12{
+                        //                                    hoapage2.append("0")
+                        //                                }
+                        //                                for _ in 0...6{
+                        //                                    hoapage3.append("0")
+                        //                                }
+                        //                                self.initial_index = [[String]]()
+                        //                                self.initial_index?.append(exhibitB)
+                        //                                self.initial_index?.append(hoapage1)
+                        //                                self.initial_index?.append(hoapage2)
+                        //                                self.initial_index?.append(hoapage3)
+                        //                            }else{
+                        //                                self.initial_index = self.getArr(rtn.initial_index!)
+                        //                            }
+                        //
+                        //
+                        //
+                        //
+                        //                            let nameArray = self.getPDFSignaturePrefix()
+                        //
+                        //                            var alldots = [PDFWidgetAnnotationView]()
+                        ////                            if let a = self.pdfView?.pdfWidgetAnnotationViews as? [PDFWidgetAnnotationView]{
+                        ////                                alldots.appendContentsOf(a)
+                        ////                            }
+                        //
+                        //                            for (_,allAdditionViews) in self.fileDotsDic!{
+                        //                                alldots.appendContentsOf(allAdditionViews)
+                        //                            }
+                        //
+                        //                            for doc in self.documents!{
+                        //                                if let a = doc.addedviewss as? [PDFWidgetAnnotationView]{
+                        //                                    alldots.appendContentsOf(a)
+                        //                                }
+                        //                            }
+                        //
+                        ////                            for h in alldots{
+                        ////                            print(h.xname)
+                        ////                            }
+                        //
+                        //                            var showseller = true
+                        ////                            if let ds = self.contractInfo?.signfinishdate, ss = self.contractInfo?.status {
+                        ////                                showseller =  ds != "01/01/1980" && ss == CConstants.ApprovedStatus
+                        ////                            }
+                        //                            if let ss = self.contractInfo?.status {
+                        ////                                showseller =  (ds != "01/01/1980" && ss == CConstants.ApprovedStatus)
+                        //                                showseller =  ss == CConstants.ApprovedStatus
+                        //                            }
+                        ////                            let v = SignatureView()
+                        ////                            let initial_b1Line = v.getNewOriginLine(self.initial_b1.componentsSeparatedByString(";").map(){$0.componentsSeparatedByString("|")})
+                        ////                            var initial_b2Line : String?
+                        ////                            var signature_b1Line : String?
+                        ////                            var signature_b2Line : String?
+                        ////                            var initial_s1Line : String?
+                        ////                            var signature_s1Line : String?
+                        //
+                        //                            for d in alldots{
+                        //                                if let sign = d as? SignatureView {
+                        ////                                    if  sign.xname.hasSuffix("bottom4")
+                        ////                                        || sign.xname.hasSuffix("seller2Sign")
+                        ////                                        {
+                        ////                                        print("\"" + sign.xname + "\"" + ",")
+                        ////                                    }
+                        //
+                        //
+                        //                                    if sign.xname == "p2Ibroker2buyer1Sign" {
+                        //
+                        //                                        self.setShowSignature(sign, signs: self.signature_b1!, idcator: brokerb1 ? "1" : "0")
+                        //
+                        //                                        continue
+                        //                                    }else if sign.xname == "p2Ibroker2buyer2Sign" {
+                        //                                        self.setShowSignature(sign, signs: self.signature_b2!, idcator: (brokerb2 ? "1" : "0"))
+                        //
+                        //
+                        //                                        continue
+                        //                                    }
+                        //
+                        //                                    if sign.xname.hasSuffix("bottom1") {
+                        //                                        if sign.xname == "p3Hbottom1" {
+                        //                                         self.isCanSignature(nameArray, sign: sign, ynarr: self.initial_b1yn, inarr: self.initial_b1)
+                        //                                        }else{
+                        //                                            self.isCanSignature(nameArray, sign: sign, ynarr: self.initial_b1yn, inarr: self.initial_b1)
+                        //                                        }
+                        //                                    }else if sign.xname.hasSuffix("bottom2") {
+                        ////                                        print(sign.xname)
+                        //                                        if self.contractInfo!.client2! != "" {
+                        //                                            self.isCanSignature(nameArray, sign: sign, ynarr: self.initial_b2yn, inarr: self.initial_b2)
+                        //                                        }
+                        //                                    }else if sign.xname.hasSuffix("bottom3") && showseller {
+                        //                                        self.isCanSignature(nameArray, sign: sign, ynarr: self.initial_s1yn, inarr: self.initial_s1)
+                        //
+                        //                                    }else if sign.xname.hasSuffix("buyer1Sign") {
+                        //                                        self.isCanSignature(nameArray, sign: sign, ynarr: self.signature_b1yn, inarr: self.signature_b1)
+                        //                                    }else if sign.xname.hasSuffix("seller1Sign") && showseller {
+                        //                                        self.isCanSignature(nameArray, sign: sign, ynarr: self.signature_s1yn, inarr: self.signature_s1)
+                        //                                     }else if sign.xname.hasSuffix("buyer2Sign") {
+                        //                                        if self.contractInfo!.client2! != "" {
+                        //                                            self.isCanSignature(nameArray, sign: sign, ynarr: self.signature_b2yn, inarr: self.signature_b2)
+                        //                                        }
+                        //
+                        //                                    }else if sign.xname == "p1EBExhibitbp1sellerInitialSign" {
+                        //                                        self.setShowSignature(sign, signs: self.initial_b1!, idcator: self.initial_index![0][0])
+                        //                                    }else if sign.xname.hasSuffix("Sign3") {
+                        //                                        if sign.xname.hasPrefix("p1H") {
+                        //                                            var ab = false
+                        //                                            for l in self.hoapage1fields {
+                        //                                                if l == sign.xname {
+                        //                                                    ab = true
+                        //                                                    if self.initial_b1! != "" {
+                        //                                                        self.setShowSignature(sign, signs: self.initial_b1!, idcator: self.initial_index![1][self.hoapage1fields.indexOf(l)!])
+                        //                                                    }
+                        //
+                        //                                                    break;
+                        //                                                }
+                        //
+                        //                                            }
+                        //                                            if !ab {
+                        //                                                self.setShowSignature(sign, signs: self.initial_b1!, idcator: "0")
+                        //                                            }
+                        //                                        }else if sign.xname.hasPrefix("p2H") {
+                        //                                            var ab = false
+                        //                                            for l in self.hoapage2fields {
+                        //                                                if l == sign.xname {
+                        //                                                    ab = true
+                        //                                                    self.setShowSignature(sign, signs: self.initial_b1!, idcator: self.initial_index![2][self.hoapage2fields.indexOf(l)!])
+                        //                                                    break;
+                        //                                                }
+                        //                                            }
+                        //                                            if !ab {
+                        //                                                self.setShowSignature(sign, signs: self.initial_b1!, idcator: "0")
+                        //                                            }
+                        //                                        }else if sign.xname.hasPrefix("p3H") {
+                        //                                            var ab = false
+                        //                                            for l in self.hoapage3fields {
+                        //                                                if l == sign.xname {
+                        //                                                    ab = true
+                        //
+                        //                                                    self.setShowSignature(sign, signs: self.initial_b1!, idcator: self.initial_index![3][self.hoapage3fields.indexOf(l)!])
+                        //                                                    break;
+                        //                                                }
+                        //                                            }
+                        //                                            if !ab {
+                        //                                                self.setShowSignature(sign, signs: self.initial_b1!, idcator: "0")
+                        //                                            }
+                        //                                        }
+                        //                                    }
+                        //                                }
+                        //                            }
+                        //                        }
+                        
+                        //                        }
+                    }else{
+                        self.PopMsgWithJustOK(msg: CConstants.MsgServerError)
+                    }
+                }else{
+                    self.PopMsgWithJustOK(msg: CConstants.MsgNetworkError)
+                }
+        }
+        
+    }
+    
+    
 //    var currentlyEditingView : SPUserResizableView?
 //    var lastEditedView : SPUserResizableView?
 //    
@@ -336,191 +693,39 @@ class PDFPrintViewController: PDFBaseViewController, UIScrollViewDelegate, PDFVi
     }
     
     override func loadPDFView(){
-        
+//        return
         var filesNames = [String]()
-        filesPageCountArray = [Int]()
-        let param = ContractRequestItem(contractInfo: nil).DictionaryFromBasePdf(self.pdfInfo0!)
-//print(param)
-        
-        let margins = getMargins()
-        
-//        var pageHeight : CGFloat = CConstants.PdfPageHeight
-//        if let a  = NSUserDefaults.standardUserDefaults().valueForKey(CConstants.PdfPageMarginUserDefault) as? String{
-//            if let n = NSNumberFormatter().numberFromString(a) {
-//                pageHeight = CGFloat(n)
-//                
-//            }
-//        }
-        
-        documents = [PDFDocument]()
-        fileDotsDic = [String : [PDFWidgetAnnotationView]]()
-        var allAdditionViews = [PDFWidgetAnnotationView]()
-        
-        var lastheight : Int
-        var filePageCnt : Int = 0
-        var called = true
-//        print(filesArray)
-        var calledContract = false
-        for title in filesArray! {
-            if title !=  CConstants.ActionTitleDesignCenter
-            && title != CConstants.ActionTitleClosingMemo
-            && title != CConstants.ActionTitleAddendumC
-            && title != CConstants.ActionTitleContract
-            && title != CConstants.ActionTitleDraftContract {
-                if called{
-//                    print("a1", title)
-                    self.callService(title, param: param)
-                    called = false;
-                }
-                
-            }else{
-                if !calledContract{
-                    calledContract = (title == CConstants.ActionTitleContract
-                        || title == CConstants.ActionTitleDraftContract)
-                }
-                
-//                print("b1", title)
-                self.callService(title, param: param)
-            }
-            
-            var str : String
-            
-            lastheight = filePageCnt
-            
-            
-            switch title {
-            case CConstants.ActionTitleContract,
-            CConstants.ActionTitleDraftContract:
-//                print(contractPdfInfo?.idcity)
-                if (contractInfo?.idcity ?? "1") == "3" {
-                str = CConstants.PdfFielNameContract_Austin
-                }else{
-                str = CConstants.PdfFileNameContract
-                }
-                
-                filePageCnt += CConstants.PdfFileNameContractPageCount
-            case CConstants.ActionTitleThirdPartyFinancingAddendum:
-                str = CConstants.PdfFileNameThirdPartyFinancingAddendum
-                filePageCnt += CConstants.PdfFileNameThirdPartyFinancingAddendumPageCount
-            case CConstants.ActionTitleINFORMATION_ABOUT_BROKERAGE_SERVICES:
-                if contractInfo?.broker == "" {
-                    str = CConstants.PdfFileNameINFORMATION_ABOUT_BROKERAGE_SERVICES
-                }else{
-                    str = CConstants.PdfFileNameINFORMATION_ABOUT_BROKERAGE_SERVICES2
-                }
-                
-                filePageCnt += CConstants.PdfFileNameINFORMATION_ABOUT_BROKERAGE_SERVICESPageCount
-            case CConstants.ActionTitleAddendumA:
-                if contractInfo?.idcity ?? "1" == "3" {
-                    str = CConstants.PdfFileNameAddendumA_austin
-                }else{
-                    str = CConstants.PdfFileNameAddendumA
-                }
-                
-                filePageCnt += CConstants.PdfFileNameAddendumAPageCount
-            case CConstants.ActionTitleAddendumHOA:
-                str = CConstants.PdfFileNameAddendumHOA
-                filePageCnt += CConstants.PdfFileNameAddendumHoaPageCount
-            case CConstants.ActionTitleAddendumC:
-                if self.page2! {
-                    str = CConstants.PdfFileNameAddendumC2
-                    filePageCnt += CConstants.PdfFileNameAddendumC2PageCount
-                }else{
-                    str = CConstants.PdfFileNameAddendumC
-                    filePageCnt += CConstants.PdfFileNameAddendumCPageCount
-                }
-            case CConstants.ActionTitleBuyersExpect:
-                str = CConstants.PdfFileNameBuyersExpect
-                filePageCnt += CConstants.PdfFileNameBuyersExpectPageCount
-            case CConstants.ActionTitleFloodPlainAck:
-                str = CConstants.PdfFileNameFloodPlainAck
-                filePageCnt += CConstants.PdfFileNameFloodPlainAckPageCount
-                
-            case CConstants.ActionTitleHoaChecklist:
-                if let c = contractInfo?.hoa {
-                    if c == 1{
-                        str = CConstants.PdfFileNameHoaChecklist
-                    }else{
-                        str = CConstants.PdfFileNameHoaChecklist2
-                    }
-                }else{
-                 str = CConstants.PdfFileNameHoaChecklist
-                }
-                
-                filePageCnt += CConstants.PdfFileNameHoaChecklistPageCount
-            case CConstants.ActionTitleWarrantyAcknowledgement:
-                str = CConstants.PdfFileNameWarrantyAcknowledgement
-                filePageCnt += CConstants.PdfFileNameWarrantyAcknowledgementPageCount
-                
-            case CConstants.ActionTitleAddendumD:
-                str = CConstants.PdfFileNameAddendumD
-                filePageCnt += CConstants.PdfFileNameAddendumDPageCount
-            case CConstants.ActionTitleAddendumE:
-                str = CConstants.PdfFileNameAddendumE
-                filePageCnt += CConstants.PdfFileNameAddendumEPageCount
-            case CConstants.ActionTitleEXHIBIT_A:
-                str = CConstants.PdfFileNameEXHIBIT_A
-                filePageCnt += CConstants.PdfFileNameEXHIBIT_APageCount
-            case CConstants.ActionTitleEXHIBIT_B:
-                if contractInfo?.idcity ?? "1" == "3" {
-                    str = CConstants.PdfFileNameEXHIBIT_B_austin
-                }else{
-                    str = CConstants.PdfFileNameEXHIBIT_B
-                }
-                filePageCnt += CConstants.PdfFileNameEXHIBIT_BPageCount
-            case CConstants.ActionTitleEXHIBIT_C:
-                if contractInfo?.idcity ?? "1" == "3" {
-                    str = CConstants.PdfFileNameEXHIBIT_C_austin
-                }else{
-                    str = CConstants.PdfFileNameEXHIBIT_C
-                }
-                filePageCnt += CConstants.PdfFileNameEXHIBIT_CPageCount
-            case CConstants.ActionTitleClosingMemo:
-                str = CConstants.PdfFileNameClosingMemo
-                filePageCnt += CConstants.PdfFileNameClosingMemoPageCount
-            case CConstants.ActionTitleDesignCenter:
-                str = CConstants.PdfFileNameDesignCenter
-                filePageCnt += CConstants.PdfFileNameDesignCenterPageCount
-            default:
-                str = ""
-                filePageCnt += 0
-            }
-            filesPageCountArray?.append(filePageCnt-lastheight)
-            
-            filesNames.append(str)
-            
-            let document = PDFDocument.init(resource: str)
-            document.pdfName = title
-            documents?.append(document)
-            
-            
-            if let additionViews = document.forms.createWidgetAnnotationViewsForSuperviewWithWidth(view.bounds.size.width, margin: margins.x, hMargin: margins.y, pageMargin: CGFloat(lastheight)) as? [PDFWidgetAnnotationView]{
-                
-                
-                fileDotsDic![title] = additionViews
-                
-                allAdditionViews.appendContentsOf( additionViews)
-            }
-            
-        }
-        
-        if (!calledContract) {
-            callService(CConstants.ActionTitleContract, param: param)
-        }
 //        let a = NSDate()
 //        print(NSDate())
-        pdfView = PDFView(frame: view2.bounds, dataOrPathArray: filesNames, additionViews: allAdditionViews)
-        pdfView?.delegate = self
-//        sendItem.im
-//        sendItem.title = "\(a) == \(NSDate())"
-        //        print(self.document?.forms)
-        setAddendumC()
+        filesNames.append(CConstants.PdfFileNameContract)
+        
+        let document = PDFDocument.init(resource: CConstants.PdfFileNameContract)
+        document.pdfName = CConstants.PdfFileNameContract
+         let margins = getMargins()
+        
+        if let additionViews = document.forms.createWidgetAnnotationViewsForSuperviewWithWidth(view.bounds.size.width, margin: margins.x, hMargin: margins.y, pageMargin: 0) as? [PDFWidgetAnnotationView]{
+            for a in additionViews {
+                print(a.xname)
+            }
+            
+            
+            pdfView = PDFView(frame: view2.bounds, dataOrPathArray: filesNames, additionViews: additionViews)
+            pdfView?.delegate = self
+            //        sendItem.im
+            //        sendItem.title = "\(a) == \(NSDate())"
+            //        print(self.document?.forms)
+            //        setAddendumC()
+            
+            
+            view2.addSubview(pdfView!)
+            getSignature()
+            
+        }
+       
         
         
-        view2.addSubview(pdfView!)
-        getSignature()
         
-        getAllSignature()
+//        getAllSignature()
         
         
         
@@ -915,64 +1120,8 @@ class PDFPrintViewController: PDFBaseViewController, UIScrollViewDelegate, PDFVi
         }
         
     }
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        setSendItema()
-        
-//        var showBuyer1 : Bool?
-//        if self.contractPdfInfo?.buyer1SignFinishedyn == 1 || self.contractPdfInfo?.verify_code != ""{
-//            showBuyer1 = false
-//        }else{
-//            let (n, _) = tp.CheckBuyerFinish(self.fileDotsDic, documents: self.documents, isbuyer1: true)
-//            showBuyer1 = !n
-//        }
-        
-        
-        
-        let userinfo = NSUserDefaults.standardUserDefaults()
-        userinfo.setInteger(0, forKey: "ClearDraftInfo")
-        if userinfo.boolForKey(CConstants.UserInfoIsContract) {
-            self.navigationItem.title = "Contract"
-            
-            if filesArray != nil {
-                switch filesArray![0]{
-                case CConstants.ActionTitleAddendumC:
-                    self.pageChanged( 6)
-                case CConstants.ActionTitleEXHIBIT_B:
-                    self.pageChanged( 3)
-                case CConstants.ActionTitleINFORMATION_ABOUT_BROKERAGE_SERVICES,
-                    CConstants.ActionTitleAddendumD,
-                    CConstants.ActionTitleAddendumE,
-                    CConstants.ActionTitleHoaChecklist:
-                    self.pageChanged( 1)
-                case CConstants.ActionTitleAddendumA:
-                    self.pageChanged( 2)
-                case CConstants.ActionTitleEXHIBIT_C:
-                    self.pageChanged( 4)
-                case CConstants.ActionTitleDesignCenter:
-                    self.pageChanged( 5)
-                default:
-                    break
-                }
-            }
-        }else{
-            self.navigationItem.title = "Draft"
-//            buyer1Date.title = ""
-//            buyer2Date.title = ""
-//            buyer1Item.title = ""
-//            buyer2Item.title = ""
-//            seller1Item.title = ""
-//            seller2Item.title = ""
-        }
-        
-        
-        if filesArray?.count == 1 {
-            self.title = filesArray![0]
-        }
-        
-       
-    }
+   
+    
     
    
     // MARK: Request Data
@@ -2319,211 +2468,7 @@ private func getStr(h : [[String]]?) -> String {
     var signature_s1 : String?
     
     
-    func getSignature(){
-//        print(["idcontract1" : self.contractInfo!.idnumber!])
-        Alamofire.request(.POST,
-            CConstants.ServerURL + "bacontract_GetSignedContract.json",
-            parameters: ["idcontract1" : self.contractInfo!.idnumber!]).responseJSON{ (response) -> Void in
-//                hud.hide(true)
-                if response.result.isSuccess {
-//                    print(response.result.value)
-                    if let rtnValue = response.result.value as? [String: AnyObject]{
-//                       print(rtnValue)
-                        let rtn = SignatrureFields(dicInfo: rtnValue)
-                        if rtn.initial_b1yn! != "" {
-//                             print(rtn.initial_b1yn)
-                            var brokerb1 = false
-                            var brokerb2 = false
-                            if rtn.brokerInfoPage2 != "" {
-                                if rtn.brokerInfoPage2!.containsString("|") {
-                                    let cc = rtn.brokerInfoPage2!.componentsSeparatedByString("|")
-                                    brokerb1 = (cc[0] == "1")
-                                    brokerb2 = (cc[1] == "1")
-                                }else{
-                                    brokerb1 = (rtn.brokerInfoPage2! == "1")
-                                }
-                            }
-                            self.initial_b1yn = self.getArr(rtn.initial_b1yn!)
-                            self.initial_b2yn = self.getArr(rtn.initial_b2yn!)
-                            self.initial_s1yn = self.getArr(rtn.initial_s1yn!)
-                            self.signature_b1yn = self.getArr(rtn.signature_b1yn!)
-                            self.signature_b2yn = self.getArr(rtn.signature_b2yn!)
-                            self.signature_s1yn = self.getArr(rtn.signature_s1yn!)
-                            
-                            self.initial_b1 = rtn.initial_b1
-                            self.initial_b2 = rtn.initial_b2
-                            self.signature_b1 = rtn.signature_b1
-                            self.signature_b2 = rtn.signature_b2
-                            self.initial_s1 = rtn.initial_s1
-                            self.signature_s1 = rtn.signature_s1
-                            
-                            if rtn.initial_index == "" {
-                                let exhibitB = ["0"]
-                                var hoapage1 = [String]()
-                                var hoapage2 = [String]()
-                                var hoapage3 = [String]()
-                                for _ in 0...13{
-                                    hoapage1.append("0")
-                                }
-                                for _ in 0...12{
-                                    hoapage2.append("0")
-                                }
-                                for _ in 0...6{
-                                    hoapage3.append("0")
-                                }
-                                self.initial_index = [[String]]()
-                                self.initial_index?.append(exhibitB)
-                                self.initial_index?.append(hoapage1)
-                                self.initial_index?.append(hoapage2)
-                                self.initial_index?.append(hoapage3)
-                            }else{
-                                self.initial_index = self.getArr(rtn.initial_index!)
-                            }
-                            
-                            
-                            
-                            
-                            let nameArray = self.getPDFSignaturePrefix()
-                            
-                            var alldots = [PDFWidgetAnnotationView]()
-//                            if let a = self.pdfView?.pdfWidgetAnnotationViews as? [PDFWidgetAnnotationView]{
-//                                alldots.appendContentsOf(a)
-//                            }
-                            
-                            for (_,allAdditionViews) in self.fileDotsDic!{
-                                alldots.appendContentsOf(allAdditionViews)
-                            }
-                            
-                            for doc in self.documents!{
-                                if let a = doc.addedviewss as? [PDFWidgetAnnotationView]{
-                                    alldots.appendContentsOf(a)
-                                }
-                            }
-                            
-//                            for h in alldots{
-//                            print(h.xname)
-//                            }
-                            
-                            var showseller = true
-//                            if let ds = self.contractInfo?.signfinishdate, ss = self.contractInfo?.status {
-//                                showseller =  ds != "01/01/1980" && ss == CConstants.ApprovedStatus
-//                            }
-                            if let ss = self.contractInfo?.status {
-//                                showseller =  (ds != "01/01/1980" && ss == CConstants.ApprovedStatus)
-                                showseller =  ss == CConstants.ApprovedStatus
-                            }
-//                            let v = SignatureView()
-//                            let initial_b1Line = v.getNewOriginLine(self.initial_b1.componentsSeparatedByString(";").map(){$0.componentsSeparatedByString("|")})
-//                            var initial_b2Line : String?
-//                            var signature_b1Line : String?
-//                            var signature_b2Line : String?
-//                            var initial_s1Line : String?
-//                            var signature_s1Line : String?
-                            
-                            for d in alldots{
-                                if let sign = d as? SignatureView {
-//                                    if  sign.xname.hasSuffix("bottom4")
-//                                        || sign.xname.hasSuffix("seller2Sign")
-//                                        {
-//                                        print("\"" + sign.xname + "\"" + ",")
-//                                    }
-                                    
-                                    
-                                    if sign.xname == "p2Ibroker2buyer1Sign" {
-                                    
-                                        self.setShowSignature(sign, signs: self.signature_b1!, idcator: brokerb1 ? "1" : "0")
-                                    
-                                        continue
-                                    }else if sign.xname == "p2Ibroker2buyer2Sign" {
-                                        self.setShowSignature(sign, signs: self.signature_b2!, idcator: (brokerb2 ? "1" : "0"))
-                                        
-                                        
-                                        continue
-                                    }
-                                    
-                                    if sign.xname.hasSuffix("bottom1") {
-                                        if sign.xname == "p3Hbottom1" {
-                                         self.isCanSignature(nameArray, sign: sign, ynarr: self.initial_b1yn, inarr: self.initial_b1)
-                                        }else{
-                                            self.isCanSignature(nameArray, sign: sign, ynarr: self.initial_b1yn, inarr: self.initial_b1)
-                                        }
-                                    }else if sign.xname.hasSuffix("bottom2") {
-//                                        print(sign.xname)
-                                        if self.contractInfo!.client2! != "" {
-                                            self.isCanSignature(nameArray, sign: sign, ynarr: self.initial_b2yn, inarr: self.initial_b2)
-                                        }
-                                    }else if sign.xname.hasSuffix("bottom3") && showseller {
-                                        self.isCanSignature(nameArray, sign: sign, ynarr: self.initial_s1yn, inarr: self.initial_s1)
-                                        
-                                    }else if sign.xname.hasSuffix("buyer1Sign") {
-                                        self.isCanSignature(nameArray, sign: sign, ynarr: self.signature_b1yn, inarr: self.signature_b1)
-                                    }else if sign.xname.hasSuffix("seller1Sign") && showseller {
-                                        self.isCanSignature(nameArray, sign: sign, ynarr: self.signature_s1yn, inarr: self.signature_s1)
-                                     }else if sign.xname.hasSuffix("buyer2Sign") {
-                                        if self.contractInfo!.client2! != "" {
-                                            self.isCanSignature(nameArray, sign: sign, ynarr: self.signature_b2yn, inarr: self.signature_b2)
-                                        }
-                                        
-                                    }else if sign.xname == "p1EBExhibitbp1sellerInitialSign" {
-                                        self.setShowSignature(sign, signs: self.initial_b1!, idcator: self.initial_index![0][0])
-                                    }else if sign.xname.hasSuffix("Sign3") {
-                                        if sign.xname.hasPrefix("p1H") {
-                                            var ab = false
-                                            for l in self.hoapage1fields {
-                                                if l == sign.xname {
-                                                    ab = true
-                                                    if self.initial_b1! != "" {
-                                                        self.setShowSignature(sign, signs: self.initial_b1!, idcator: self.initial_index![1][self.hoapage1fields.indexOf(l)!])
-                                                    }
-                                                    
-                                                    break;
-                                                }
-                                                
-                                            }
-                                            if !ab {
-                                                self.setShowSignature(sign, signs: self.initial_b1!, idcator: "0")
-                                            }
-                                        }else if sign.xname.hasPrefix("p2H") {
-                                            var ab = false
-                                            for l in self.hoapage2fields {
-                                                if l == sign.xname {
-                                                    ab = true
-                                                    self.setShowSignature(sign, signs: self.initial_b1!, idcator: self.initial_index![2][self.hoapage2fields.indexOf(l)!])
-                                                    break;
-                                                }
-                                            }
-                                            if !ab {
-                                                self.setShowSignature(sign, signs: self.initial_b1!, idcator: "0")
-                                            }
-                                        }else if sign.xname.hasPrefix("p3H") {
-                                            var ab = false
-                                            for l in self.hoapage3fields {
-                                                if l == sign.xname {
-                                                    ab = true
-                                                    
-                                                    self.setShowSignature(sign, signs: self.initial_b1!, idcator: self.initial_index![3][self.hoapage3fields.indexOf(l)!])
-                                                    break;
-                                                }
-                                            }
-                                            if !ab {
-                                                self.setShowSignature(sign, signs: self.initial_b1!, idcator: "0")
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        
-//                        }
-                    }else{
-                       self.PopMsgWithJustOK(msg: CConstants.MsgServerError)
-                    }
-                }else{
-                    self.PopMsgWithJustOK(msg: CConstants.MsgNetworkError)
-                }
-        }
-        
-    }
+   
     
     private func setShowSignature(si: SignatureView, signs signsx: String, idcator : String) {
        

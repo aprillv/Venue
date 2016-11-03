@@ -19,9 +19,9 @@ class EventListViewHeadView: UIView {
     
     private struct constants{
         static let ProjectNM = "Event Name"
-        static let Consultant = "Start"
+        static let Consultant = "Buyer"
         static let Client = "Venue Name"
-        static let Status = "End"
+        static let Status = "Contract Date"
         static let HeadBackGroudColor = UIColor(red: 204/255.0, green: 204/255.0, blue: 204/255.0, alpha: 1)
     }
     

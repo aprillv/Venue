@@ -33,6 +33,7 @@ class LoginViewController: BaseViewController, UITextFieldDelegate {
         static let EmailEmptyMsg :  String = "Email Required."
         static let WrongEmailOrPwdMsg :  String = "Email or password is incorrect."
         
+        
     }
     
     
@@ -269,7 +270,7 @@ class LoginViewController: BaseViewController, UITextFieldDelegate {
                                     
                                     self.saveEmailAndPwdToDisk(email: email!, password: password!)
                                     
-                                    self.performSegueWithIdentifier(CConstants.SegueToEventsList, sender: sender)
+                                    self.performSegueWithIdentifier(CConstants.SegueToContractList, sender: sender)
 
                                 }else{
                                 
