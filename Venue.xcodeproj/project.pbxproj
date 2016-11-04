@@ -922,7 +922,7 @@
 				INFOPLIST_FILE = Contract/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_QUOTE_LINKER_ARGUMENTS_FOR_COMPILER_DRIVER = YES;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.ba.Venue;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -950,7 +950,7 @@
 				INFOPLIST_FILE = Contract/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_QUOTE_LINKER_ARGUMENTS_FOR_COMPILER_DRIVER = YES;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.ba.Venue;
 				PRODUCT_NAME = "$(TARGET_NAME)";

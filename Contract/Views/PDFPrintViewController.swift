@@ -180,7 +180,7 @@ class PDFPrintViewController: PDFBaseViewController, UIScrollViewDelegate, PDFVi
             parameters: ["email" :email, "password" : password, "idcontract" : self.idContract ?? ""]).responseJSON{ (response) -> Void in
                 //                hud.hide(true)
                 if response.result.isSuccess {
-//                    print(response.result.value)
+                    print(response.result.value)
                     if let rtnValue = response.result.value as? [String: AnyObject]{
                         //                       print(rtnValue)
                         self.ContractData = ContractDetail(dicInfo: rtnValue)
