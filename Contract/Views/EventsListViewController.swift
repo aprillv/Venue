@@ -669,4 +669,7 @@ class EventsListViewController: UITableViewController, UISearchBarDelegate{
         }
     }
     
+   
+    
+    
 }

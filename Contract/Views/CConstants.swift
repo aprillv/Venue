@@ -16,9 +16,10 @@ struct CConstants{
     
     static let ShowFilter : String = "ShowFilter"
     
-    static let MsgTitle : String = "BA Contract"
+    static let MsgTitle : String = "BA Venue Contract"
     static let MsgOKTitle : String = "OK"
     static let MsgValidationTitle : String = "Validation Failed"
+    static let MsgWrongNameOrPs: String = "Invalid email address or password."
     static let MsgServerError : String = "Server Error, please try again later"
     static let MsgNetworkError : String = "Network Error, please check your network"
     
@@ -26,6 +27,7 @@ struct CConstants{
     static let UserInfoEmail :  String = "Login Email"
     static let UserInfoName :  String = "Logined User Name"
     static let UserInfoDisplayName :  String = "Logined User Display Name"
+    static let UserInfoLoginedPwd :  String = "UserInfoLoginedPwd"
     static let UserInfoPwd :  String = "Login Password"
     static let UserInfoIsContract :  String = "is contract"
     static let UserInfoPrintModel : String = "last print files"
@@ -33,12 +35,13 @@ struct CConstants{
     static let LoginingMsg = "   Logining...   "
     static let RequestMsg = "Requesting from server..."
      static let SubmitMsg = "Submitting to server..."
+    static let SubmitedMsg = "Submitted successfully"
     static let SavedMsg = "Saving to the BA Server..."
     static let SavedSuccessMsg = "Saved successfully."
     static let SavedFailMsg = "Saved fail."
     static let SendEmailSuccessfullMsg = "Sent email successfully."
     static let PrintSuccessfullMsg = "Print successfully."
-    
+    static let EmailContractToLicensee = "Sending contract to licensee..."
     static let CheckedImgNm = "checked"
     static let CheckImgNm = "check"
     static let SuccessImageNm = "checkmark"
@@ -80,7 +83,7 @@ struct CConstants{
     static let ContractDetailServiceURL : String = "bavenue_contractdetail.json"
     
     //check app version
-    static let CheckUpdateServiceURL: String = "bacontract_version.json"
+    static let CheckUpdateServiceURL: String = "bavenue_version.json"
     //get contract signature
     static let ContractServiceURL = "bacontract_signature.json"
     //get contract Addendum A
@@ -100,6 +103,7 @@ struct CConstants{
    
     
     static let PdfFileNameContract = "Venue License Agreement (Form)"
+    static let PdfFileNameContractFull = "Venue License Agreement (Form)Full"
     static let PdfFielNameContract_Austin = "BaseContract_Austin"
     static let PdfFileNameThirdPartyFinancingAddendum = "Third_Party_Financing_Addendum_TREC"
     static let PdfFileNameClosingMemo = "ClosingMemo"
@@ -190,10 +194,11 @@ struct CConstants{
     static let ApplicationBarItemFontSize : CGFloat = 17.0
     
     static let ApprovedStatus : String = "Approved"
+    static let DraftStatus : String = "Draft"
     static let DisApprovedStatus : String = "Disapproved"
     static let EmailSignedStatus : String = "Email Sign"
     static let ForApproveStatus : String = "For Approve"
-    static let DraftStatus : String = "iPad Sign"
+//    static let DraftStatus : String = "iPad Sign"
     
     static let GoToBAMsg : String = "Go back to BA to modify and send to IPAD /Email  again."
     

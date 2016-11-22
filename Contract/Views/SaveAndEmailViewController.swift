@@ -10,7 +10,7 @@ import UIKit
 protocol SaveAndEmailViewControllerDelegate
 {
     func GoToEmailSubmit(email: String, emailcc: String, msg: String)
-    func ClearEmailData()
+//    func ClearEmailData()
 }
 class SaveAndEmailViewController: BaseViewController, UITableViewDelegate, UITableViewDataSource, UITextViewDelegate{
     
@@ -129,7 +129,7 @@ class SaveAndEmailViewController: BaseViewController, UITableViewDelegate, UITab
     @IBAction func close(sender: UIButton) {
         self.dismissViewControllerAnimated(true) {
             if let d = self.delegate {
-                d.ClearEmailData()
+//                d.ClearEmailData()
             }
         }
     }

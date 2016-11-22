@@ -9,20 +9,21 @@
 import UIKit
     protocol EmailContractToBuyerViewControllerDelegate
     {
-        func GoToSendEmailToBuyer(msg msg: String, hasbuyer1: Bool, hasbuyer2: Bool)
+        func GoToSendEmailToLicensee(msg msg: String)
         
     }
 
 
     class EmailContractToBuyerViewController: BaseViewController, UITableViewDelegate, UITableViewDataSource, UITextViewDelegate{
         
-        var contractInfo : ContractSignature?
+        var contractInfo : ContractDetail?
         @IBOutlet var buyer1Btn: UIButton!
         @IBOutlet var buyer2Btn: UIButton!
         @IBOutlet var buyer1Email: UILabel!
         @IBOutlet var buyer2Email: UILabel!
         
         
+        @IBOutlet var lbl: UILabel!
         
        var delegate : EmailContractToBuyerViewControllerDelegate?
         
@@ -82,41 +83,18 @@ import UIKit
             super.viewDidLoad()
             
             if let info = self.contractInfo {
+//                lbl.text = (info.eventName ?? "") + " @ " + (info.venueName ?? "")
 //                print(info.bemail1, info.bemail2)
-                self.buyer1Email.text = (info.client ?? "") + " (" + (info.bemail1 ?? "") + ")"
-                if info.client2 ?? "" != "" {
-                    if info.buyer1SignFinishedyn != 1 && info.buyer2SignFinishedyn != 1 && (info.verify_code == "" && info.verify_code2 == "") {
-                        if info.bemail2 != "" {
-                            self.buyer2Email.text = (info.client2 ?? "") + " (" + (info.bemail2 ?? "") + ")"
-                        }else{
-                            self.buyer2Email.text = (info.client2 ?? "") + " (" + (info.bemail1 ?? "") + ")"
-                        }
-                    }else if (info.buyer1SignFinishedyn == 1 || info.verify_code != "") {
-                        if info.bemail2 != "" {
-                            self.buyer1Email.text = (info.client2 ?? "") + " (" + (info.bemail2 ?? "") + ")"
-                        }else{
-                            self.buyer1Email.text = (info.client2 ?? "") + " (" + (info.bemail1 ?? "") + ")"
-                        }
-                        self.topDistance.constant = 11
-                        self.buyer2Email.hidden  = true
-                        self.buyer2Btn.hidden = true
-                        self.view.updateConstraints()
-                    }else if (info.buyer2SignFinishedyn == 1 || info.verify_code2 != ""){
-                        self.topDistance.constant = 11
-                        self.buyer2Email.hidden  = true
-                        self.buyer2Btn.hidden = true
-                        self.view.updateConstraints()
-                    }
-                    
-                    
-                }else{
+                self.buyer1Email.text = (info.licensee ?? "") + " (" + (info.licenseeEmail ?? "") + ")"
+                
                 self.topDistance.constant = 11
+            
                     self.buyer2Email.hidden  = true
                     self.buyer2Btn.hidden = true
+                self.buyer1Btn.hidden = true
                     self.view.updateConstraints()
-                }
                 
-                desView.text = "Your online contract is ready!"
+                desView.text = "Your online venue contract is ready!"
                 
             }
            
@@ -163,47 +141,12 @@ import UIKit
             }
         }
         @IBAction func doSubmit(sender: UIButton) {
-//            print(self.buyer1Email.text, self.buyer2Email.text)
-//            return
-            var a = self.buyer1Btn.tag == 1
-            var b = self.buyer2Btn.tag == 1
-            
-            if self.buyer1Email.text!.hasPrefix((self.contractInfo?.client ?? "  ") + " (") {
-                if self.contractInfo?.client2 == nil || self.contractInfo?.client2 == "" || self.contractInfo?.buyer2SignFinishedyn == 1 {
-                    b = false
-                }
-//                if (self.contractInfo?.buyer1SignFinishedyn == 1){
-//                    b = a
-//                    a = false
-//                }
-                if self.buyer2Btn.hidden {
-                    b = false
-                }
-            }else {
-                b = a
-                a = false
-                
-            }
-//            print(self.buyer1Btn.hidden, self.buyer2Btn.hidden)
-//            if (self.contractInfo?.buyer1SignFinishedyn == 1 || self.contractInfo?.verify_code2 != ""){
-//                b = a
-//                a = false
-//            }
-            
-//            var a = !self.buyer1Btn.hidden
-//            var b = !self.buyer2Btn.hidden
-//            print(self.buyer1Btn.hidden, self.buyer2Btn.hidden)
-            
-            
-            if !a && !b {
-                return
-            }
             
             self.dismissViewControllerAnimated(true) {
                 if self.delegate != nil {
                     
                     
-                    self.delegate?.GoToSendEmailToBuyer(msg: self.desView.text, hasbuyer1: a, hasbuyer2: b)
+                    self.delegate?.GoToSendEmailToLicensee(msg: self.desView.text)
                     
                 }
             }

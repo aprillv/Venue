@@ -23,4 +23,5 @@ class VenueContractListItem: ContractObject {
     var licensor: String?
     var status: String?
     var venuename: String?
+    var signtype : String?
 }

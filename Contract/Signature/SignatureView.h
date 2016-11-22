@@ -7,7 +7,7 @@
 //
 
 #import "PDFWidgetAnnotationView.h"
-#import "PDFView.h"
+#import "PDFViewApp.h"
 @interface SignatureView : PDFWidgetAnnotationView
 
 @property (nonatomic, retain) NSMutableArray *lineArray;
@@ -15,7 +15,7 @@
 @property (nonatomic, retain) NSString *sname;
 @property (nonatomic, assign) float LineWidth;
 @property (nonatomic, assign)  BOOL showornot;
-@property (nonatomic,retain)   PDFView* pdfViewsssss;
+@property (nonatomic,retain)   PDFViewApp* pdfViewsssss;
 @property (nonatomic,strong)   UIButton* menubtn;
 @property (nonatomic, assign) float originHeight;
 @property (nonatomic, assign) float originWidth;

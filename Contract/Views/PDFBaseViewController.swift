@@ -10,12 +10,12 @@ import Alamofire
 import MessageUI
 import MBProgressHUD
 
-class PDFBaseViewController: BaseViewController, DoOperationDelegate, UIPopoverPresentationControllerDelegate, MFMailComposeViewControllerDelegate, UIPrintInteractionControllerDelegate, ToDoPrintDelegate, ToSwitchAddressDelegate {
+class PDFBaseViewController: BaseViewController, UIPopoverPresentationControllerDelegate, MFMailComposeViewControllerDelegate, UIPrintInteractionControllerDelegate, ToDoPrintDelegate, ToSwitchAddressDelegate {
 //    @IBOutlet var view2: UIView!
-    var document : PDFDocument?
-    var documents : [PDFDocument]?
+    var document : PDFDocumentApp?
+    var documents : [PDFDocumentApp]?
 //    var documentAddedDotArray : [[PDFWidgetAnnotationView]]?
-    var pdfView  : PDFView?
+    var pdfView  : PDFViewApp?
 //    var AddressList : [ContractsItem]?
     
 //    var locked: Bool?
@@ -80,15 +80,15 @@ class PDFBaseViewController: BaseViewController, DoOperationDelegate, UIPopoverP
     }
     
     func initWithData(data: NSData){
-        document = PDFDocument(data: data)
+        document = PDFDocumentApp(data: data)
     }
     
     func initWithResource(name: String){
-        document = PDFDocument(resource: name)
+        document = PDFDocumentApp(resource: name)
     }
     
     func initWithPath(path: String){
-        document = PDFDocument(resource: path)
+        document = PDFDocumentApp(resource: path)
     }
     
     func reload(){
@@ -156,7 +156,7 @@ class PDFBaseViewController: BaseViewController, DoOperationDelegate, UIPopoverP
 //        var savedPdfData: NSData?
 //        
 //        if self.documents != nil && self.documents?.count > 0 {
-//            savedPdfData = PDFDocument.mergedDataWithDocuments(self.documents)
+//            savedPdfData = PDFDocumentApp.mergedDataWithDocuments(self.documents)
 //        }else{
 //            if let added = pdfView?.addedAnnotationViews{
 //                //            print(added)
@@ -239,7 +239,7 @@ class PDFBaseViewController: BaseViewController, DoOperationDelegate, UIPopoverP
         var savedPdfData: NSData?
         
         if self.documents != nil && self.documents?.count > 0 {
-            savedPdfData = PDFDocument.mergedDataWithDocuments(self.documents)
+            savedPdfData = PDFDocumentApp.mergedDataWithDocuments(self.documents)
         }else{
             if let added = pdfView?.addedAnnotationViews{
                 //            print(added)
@@ -286,7 +286,7 @@ class PDFBaseViewController: BaseViewController, DoOperationDelegate, UIPopoverP
             var savedPdfData: NSData?
             
             if self.documents != nil && self.documents?.count > 0 {
-                savedPdfData = PDFDocument.mergedDataWithDocuments(self.documents)
+                savedPdfData = PDFDocumentApp.mergedDataWithDocuments(self.documents)
             }else{
                 if let added = pdfView?.addedAnnotationViews{
                     //            print(added)
@@ -449,7 +449,7 @@ class PDFBaseViewController: BaseViewController, DoOperationDelegate, UIPopoverP
 //            }
 //        }else{
             if modelNmA.contains(CConstants.ActionTitleAddendumC) {
-                callService(modelNmA, param: ContractRequestItem(contractInfo: nil).DictionaryFromBasePdf(self.pdfInfo0!))
+//                callService(modelNmA, param: ContractRequestItem(contractInfo: nil).DictionaryFromBasePdf(self.pdfInfo0!))
             }else{
                 let vc = UIStoryboard(name: CConstants.StoryboardName, bundle: nil).instantiateViewControllerWithIdentifier(CConstants.ControllerNamePrint) as? PDFBaseViewController
                 if let controller = vc as? PDFPrintViewController{
@@ -470,144 +470,13 @@ class PDFBaseViewController: BaseViewController, DoOperationDelegate, UIPopoverP
         
     }
     
-    private func callService(printModelNms: [String], param: [String: String]){
-        var serviceUrl: String?
-        var printModelNm: String
-        if printModelNms.count == 1 {
-            printModelNm = printModelNms[0]
-        }else{
-            printModelNm = CConstants.ActionTitleAddendumC
-        }
-        switch printModelNm{
-        case CConstants.ActionTitleAddendumC:
-            serviceUrl = CConstants.AddendumCServiceURL
-        default:
-            serviceUrl = CConstants.AddendumAServiceURL
-        }
-        if self.hud == nil {
-            self.hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
-        }
-        self.hud?.mode = .Indeterminate
-        self.hud?.labelText = CConstants.RequestMsg
-        
-       
-        Alamofire.request(.POST,
-            CConstants.ServerURL + serviceUrl!,
-            parameters: param).responseJSON{ (response) -> Void in
-                self.hud?.hide(true)
-                if response.result.isSuccess {
-                    
-                    if let rtnValue = response.result.value as? [String: AnyObject]{
-                        if let msg = rtnValue["message"] as? String{
-                            if msg.isEmpty{
-                                var vc : PDFBaseViewController?
-                                switch printModelNm {
-                                case CConstants.ActionTitleAddendumC:
-                                    var itemList = [[String]]()
-                                    var i = 0
-                                    if let list = ContractAddendumC(dicInfo: rtnValue).itemlist {
-                                        for items in list {
-                                            
-                                            var itemList1 = [String]()
-                                            let textView = UITextView(frame: CGRect(x: 0, y: 0, width: 657.941, height: 13.2353))
-                                            textView.scrollEnabled = false
-                                            textView.font = UIFont(name: "Verdana", size: 11.0)
-                                            textView.text = items.xdescription!
-                                            textView.sizeToFit()
-                                            textView.layoutManager.enumerateLineFragmentsForGlyphRange(NSMakeRange(0, items.xdescription!.characters.count), usingBlock: { (rect, usedRect, textContainer, glyphRange, _) -> Void in
-                                                if  let a : NSString = items.xdescription! as NSString {
-                                                    
-                                                    i += 1
-                                                    itemList1.append(a.substringWithRange(glyphRange))
-                                                }
-                                            })
-                                            //                            itemList1.append("april test")
-                                            itemList.append(itemList1)
-                                        }
-                                    }
-                                    
-//                                    if printModelNms.count == 1 {
-//                                        vc = UIStoryboard(name: CConstants.StoryboardName, bundle: nil).instantiateViewControllerWithIdentifier(CConstants.ControllerNameAddendumC) as? PDFBaseViewController
-//                                        if let controller = vc as? AddendumCViewController{
-//                                            controller.pdfInfo = ContractAddendumC(dicInfo: rtnValue)
-//                                            
-//                                            
-//                                            controller.pdfInfo!.itemlistStr = itemList
-//                                            
-//                                            
-//                                            let pass = i > 19 ? CConstants.PdfFileNameAddendumC2 : CConstants.PdfFileNameAddendumC
-//                                            
-//                                            controller.initWithResource(pass)
-//                                        }
-//                                    }else{
-                                        vc = UIStoryboard(name: CConstants.StoryboardName, bundle: nil).instantiateViewControllerWithIdentifier(CConstants.ControllerNamePrint) as? PDFBaseViewController
-                                        if let controller = vc as? PDFPrintViewController{
-                                            controller.pdfInfo0 = ContractAddendumC(dicInfo: rtnValue)
-                                            
-                                            controller.addendumCpdfInfo = ContractAddendumC(dicInfo: rtnValue)
-                                            controller.addendumCpdfInfo!.itemlistStr = itemList
-//                                            let pass = i > 19 ? CConstants.PdfFileNameAddendumC2 : CConstants.PdfFileNameAddendumC
-                                            controller.filesArray = printModelNms
-                                            controller.page2 = i > 19
-//                                            controller.initWithResource(pass)
-                                        }
-//                                    }
-                                    
-                                
-                                default:
-                                    break;
-                                }
-//                                if let vcc = vc {
-//                                    vcc.AddressList = self.AddressList
-//                                    var na = self.navigationController?.viewControllers
-//                                    na?.removeLast()
-//                                    na?.append(vcc)
-//                                    self.navigationController?.viewControllers = na!
-//                                }
-                                
-                            }else{
-                                self.PopMsgWithJustOK(msg: msg)
-                            }
-                        }else{
-                            self.PopMsgWithJustOK(msg: CConstants.MsgServerError)
-                        }
-                    }else{
-                        self.PopMsgWithJustOK(msg: CConstants.MsgServerError)
-                    }
-                }else{
-                    //                            self.spinner?.stopAnimating()
-                    self.PopMsgWithJustOK(msg: CConstants.MsgNetworkError)
-                }
-        }
-        
-    }
+  
     
     func GoToAddress(item : ContractsItem) {
-//        if self.navigationItem.title! == CConstants.ActionTitleINFORMATION_ABOUT_BROKERAGE_SERVICES {
-//            if let vc = UIStoryboard(name: CConstants.StoryboardName, bundle: nil).instantiateViewControllerWithIdentifier(CConstants.ControllerNameINFORMATION_ABOUT_BROKERAGE_SERVICES) as? PDFBaseViewController{
-//                
-//                vc.pdfInfo0 = self.pdfInfo0
-//                vc.pdfInfo0?.nproject = item.nproject
-//                vc.pdfInfo0?.idcia = item.idcia
-//                vc.pdfInfo0?.idcity = item.idcity
-//                vc.pdfInfo0?.idnumber = item.idnumber
-//                vc.pdfInfo0?.idproject = item.idproject
-//                vc.pdfInfo0?.code = item.code
-//                vc.initWithResource(CConstants.PdfFileNameINFORMATION_ABOUT_BROKERAGE_SERVICES)
-//                
-//                vc.AddressList = self.AddressList
-//                var na = self.navigationController?.viewControllers
-//                na?.removeLast()
-//                na?.append(vc)
-//                self.navigationController?.viewControllers = na!
-//            }
-//            
-//            return
-//        }
         if self.isKindOfClass(PDFPrintViewController) {
             if let printViewController = self as? PDFPrintViewController {
                 if printViewController.filesArray!.contains(CConstants.ActionTitleAddendumC) {
-                    self.callService(printViewController.filesArray!, param: ContractRequestItem(contractInfo: item).DictionaryFromObject())
+//                    self.callService(printViewController.filesArray!, param: ContractRequestItem(contractInfo: item).DictionaryFromObject())
                 }else{
                     let vc = UIStoryboard(name: CConstants.StoryboardName, bundle: nil).instantiateViewControllerWithIdentifier(CConstants.ControllerNamePrint) as? PDFBaseViewController
                     if let controller = vc as? PDFPrintViewController{
@@ -630,7 +499,7 @@ class PDFBaseViewController: BaseViewController, DoOperationDelegate, UIPopoverP
                 }
             }
         }else{
-            self.callService([self.navigationItem.title!], param: ContractRequestItem(contractInfo: item).DictionaryFromObject())
+//            self.callService([self.navigationItem.title!], param: ContractRequestItem(contractInfo: item).DictionaryFromObject())
         }
         
     }

@@ -74,6 +74,9 @@
             self.layer.cornerRadius = self.frame.size.height/6;
         }
         _multiline = multiline;
+        if ([xname isEqualToString:@"exhibita"]) {
+            multiline = YES;
+        }
         Class textCls = multiline ? [UITextView class]:[UITextField class];
         _textFieldOrTextView = [[textCls alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
         if (secureEntry) {
@@ -218,7 +221,41 @@
     }
     [self.delegate widgetAnnotationValueChanged:self];
     if ([_textFieldOrTextView isKindOfClass:[UITextField class]] || [_textFieldOrTextView isKindOfClass:[UITextView class]]){
-        [_textFieldOrTextView performSelector:@selector(setText:) withObject:value];
+        if ([self.xname isEqualToString:@"exhibita"]){
+//            NSLog(@"%@", [_textFieldOrTextView class]);
+//            let theAttributedString = try! NSAttributedString(data: theString.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false)!,
+//                                                              //                                                              options: [NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType],
+//                                                              //                                                              documentAttributes: nil)
+//            NSAttributedString *attributedString = [[NSAttributedString alloc]
+//                                                    initWithData: [@"april test" dataUsingEncoding:NSUnicodeStringEncoding]
+//                                                    options: @{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType }
+//                                                    documentAttributes: nil
+//                                                    error: nil
+//                                                    ];
+//            [_textFieldOrTextView performSelector:@selector(setAttributedText:) withObject:attributedString];
+            
+//            NSString *htmlString = @"<p>april</p>";
+////
+//////            htmlString = [htmlString stringByAppendingString:@"<style>body{font-family:'YOUR_FONT_HERE'; font-size:'SIZE';}</style>"];
+////            /*Example:
+////             
+////             htmlString = [htmlString stringByAppendingString:[NSString stringWithFormat:@"<style>body{font-family: '%@'; font-size:%fpx;}</style>",_myLabel.font.fontName,_myLabel.font.pointSize]];
+////             */
+//            NSAttributedString *attributedString = [[NSAttributedString alloc]
+//                                                    initWithData: [htmlString dataUsingEncoding:NSUTF8StringEncoding]
+//                                                    options: @{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType }
+//                                                    documentAttributes: nil
+//                                                    error: nil
+//                                                    ];
+//            UITextView * tmp = (UITextView *)_textFieldOrTextView;
+//            [tmp setAttributedText:attributedString];
+////            [_textFieldOrTextView performSelector:@selector(setAttributedText:) withObject: attributedString];
+            
+            [_textFieldOrTextView performSelector:@selector(setText:) withObject:value];
+            
+        }else{
+            [_textFieldOrTextView performSelector:@selector(setText:) withObject:value];
+        }
     }
     
     

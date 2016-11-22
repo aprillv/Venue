@@ -55,7 +55,7 @@ class LoginViewController: BaseViewController, UITextFieldDelegate {
             let userInfo = NSUserDefaults.standardUserDefaults()
             if let isRemembered = userInfo.objectForKey(CConstants.UserInfoRememberMe) as? Bool{
                 if isRemembered {
-                    passwordTxt.text = userInfo.objectForKey(CConstants.UserInfoPwd) as? String
+                    passwordTxt.text = userInfo.objectForKey(CConstants.UserInfoLoginedPwd) as? String
                 }
                 
             }
@@ -151,8 +151,12 @@ class LoginViewController: BaseViewController, UITextFieldDelegate {
     
     
     func checkUpate(sender: UIButton){
+        let email = emailTxt.text ?? ""
+        let password = self.md5(string: passwordTxt.text!) ?? ""
+//        print(password)
+
         let version = NSBundle.mainBundle().infoDictionary?["CFBundleVersion"]
-        let parameter = ["version": "\((version == nil ?  "" : version!))"]
+        let parameter = ["version": "\((version == nil ?  "" : version!))", "email": email, "password":password]
         
         
         
@@ -167,15 +171,16 @@ class LoginViewController: BaseViewController, UITextFieldDelegate {
                     }else{
                         if let url = NSURL(string: CConstants.InstallAppLink){
                             self.toEablePageControl()
-                            UIApplication.sharedApplication().openURL(url)
+                            UIApplication.sharedApplication().openURL(url, options: [:], completionHandler: nil)
                         }else{
+                            self.doLogin(self.signInBtn)
                         }
                     }
                 }else{
-//                    self.doLogin()
+                    self.doLogin(self.signInBtn)
                 }
             }else{
-//                self.doLogin()
+                self.doLogin(self.signInBtn)
             }
         }
         //     NSString*   version = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
@@ -186,8 +191,8 @@ class LoginViewController: BaseViewController, UITextFieldDelegate {
     }
     
     @IBAction func Login(sender: UIButton) {
-//        checkUpate(sender)
-         self.doLogin(sender)
+        checkUpate(sender)
+//         self.doLogin(sender)
     }
     
     private func disAblePageControl(){
@@ -220,8 +225,8 @@ class LoginViewController: BaseViewController, UITextFieldDelegate {
         passwordTxt.resignFirstResponder()
         
         let email = emailTxt.text
-        let password = passwordTxt.text
-        
+        let password = self.md5(string: passwordTxt.text!)
+//        print(password)
         if IsNilOrEmpty(email) {
             self.toEablePageControl()
             self.PopMsgWithJustOK(msg: constants.EmailEmptyMsg, txtField: emailTxt)
@@ -248,7 +253,7 @@ class LoginViewController: BaseViewController, UITextFieldDelegate {
                 hud.labelText = CConstants.LoginingMsg
                 
                 
-                let loginUserInfo = LoginUser(email: email!, password: password!, iscontract:  sender.currentTitle!.hasPrefix("Sign") ? "1" : "0")
+                let loginUserInfo = LoginUser(email: email!, password: password, iscontract:  sender.currentTitle!.hasPrefix("Sign") ? "1" : "0")
                 
                 let a = loginUserInfo.DictionaryFromObject()
 //                print(a)
@@ -267,13 +272,15 @@ class LoginViewController: BaseViewController, UITextFieldDelegate {
                                     let userinfo = NSUserDefaults.standardUserDefaults()
                                     userinfo.setObject(loginUser.sname, forKey: CConstants.UserInfoDisplayName)
                                     userinfo.setObject(loginUser.username, forKey: CConstants.UserInfoName)
+                                    userinfo.setObject(self.passwordTxt.text!, forKey: CConstants.UserInfoLoginedPwd)
                                     
-                                    self.saveEmailAndPwdToDisk(email: email!, password: password!)
+                                    self.saveEmailAndPwdToDisk(email: email!, password: password)
                                     
                                     self.performSegueWithIdentifier(CConstants.SegueToContractList, sender: sender)
 
                                 }else{
-                                
+                                    self.toEablePageControl()
+                                     self.PopMsgWithJustOK(msg: CConstants.MsgWrongNameOrPs, txtField: nil)
                                 }
 //                                var eventlist = [EventItem]()
 //                                if let events = rtnValue["events"] as? [[String: String]]{
@@ -346,6 +353,21 @@ class LoginViewController: BaseViewController, UITextFieldDelegate {
     
     
     
+    @IBOutlet var aaaaaa: UITextView!
+        {
+        didSet{
+            aaaaaa.text = ""
+            
+//            let theString = "<P>Licensor agrees to provide at the Venue, prior to the commencement date of the License Period, a concrete foundation in substantial accordance with the specifications set forth below. Licensor shall engage such contractor as it deems appropriate and shall arrange for payment of such contractor in connection with building of such concrete foundation. At the end of the License Period, Licensee shall have no responsibility for removing and shall not remove, change or in any way damage the concrete foundation provided by Licensor hereunder.</P>"
+//            
+//            let theAttributedString = try! NSAttributedString(data: theString.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false)!,
+//                                                              options: [NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType],
+//                                                              documentAttributes: nil)
+//            
+//            
+//            aaaaaa.attributedText = theAttributedString
+        }
+    }
 //    func removeHud() {
 //        HUDD?.hide(<#T##animated: Bool##Bool#>, afterDelay: <#T##NSTimeInterval#>)
 //    }

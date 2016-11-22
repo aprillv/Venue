@@ -36,7 +36,7 @@
         BOOL isSuccess = YES;
         NSMutableString *retval = [NSMutableString string];
         NSMutableArray *names = [NSMutableArray array];
-        for (PDFForm *form in forms) {
+        for (PDFFormApp *form in forms) {
            if (!form.modified) continue;
            if ([names containsObject:form.name]) continue;
            [names addObject:form.name];

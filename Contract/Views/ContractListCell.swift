@@ -14,6 +14,7 @@ class ContractListCell: UITableViewCell {
     private var VenueNmLbl: UILabel!
     private var StartLbl: UILabel!
     private var EndLbl: UILabel!
+    private var StatusLbl: UILabel!
     
     
     required init?(coder aDecoder: NSCoder) {
@@ -72,6 +73,9 @@ class ContractListCell: UITableViewCell {
             EndLbl = UILabel()
             cview.addSubview(EndLbl)
             
+            StatusLbl = UILabel()
+            cview.addSubview(StatusLbl)
+            
             setDisplaySubViews()
         }
     }
@@ -88,10 +92,11 @@ class ContractListCell: UITableViewCell {
         
         let xheight = frame.height
         let xwidth = frame.width - space * 3 - 16
-        EventNmLbl.frame  = CGRect(x: 8, y: 0, width: xwidth * 0.4, height: xheight)
-        VenueNmLbl.frame  = CGRect(x: EventNmLbl.frame.origin.x + EventNmLbl.frame.width + space, y: 0, width: xwidth * 0.28, height: xheight)
+        EventNmLbl.frame  = CGRect(x: 8, y: 0, width: xwidth * 0.32, height: xheight)
+        VenueNmLbl.frame  = CGRect(x: EventNmLbl.frame.origin.x + EventNmLbl.frame.width + space, y: 0, width: xwidth * 0.22, height: xheight)
         StartLbl.frame  = CGRect(x: VenueNmLbl.frame.origin.x + VenueNmLbl.frame.width + space, y: 0, width: xwidth * 0.16, height: xheight)
         EndLbl.frame  = CGRect(x: StartLbl.frame.origin.x + StartLbl.frame.width + space, y: 0, width: xwidth * 0.16, height: xheight)
+        StatusLbl.frame  = CGRect(x: EndLbl.frame.origin.x + EndLbl.frame.width + space, y: 0, width: xwidth * 0.14, height: xheight)
         
         
     }
@@ -124,6 +129,13 @@ class ContractListCell: UITableViewCell {
                 StartLbl.text = item.buyer
                 VenueNmLbl.text = item.venuename
                 EndLbl.text = item.contractdate
+                if item.status == "Draft" && item.signtype == "iPad" {
+                StatusLbl.text = "iPad Sign"
+                }else if item.status == "Draft" && item.signtype == "Email" {
+                    StatusLbl.text = "Email Sign"
+                }else{
+                    StatusLbl.text = item.status
+                }
             }
         }
     }

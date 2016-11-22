@@ -21,28 +21,28 @@
 // THE SOFTWARE.
 
 #import <Foundation/Foundation.h>
-#import "PDFForm.h"
+#import "PDFFormApp.h"
 
 
 @class PDFDocument;
 
-/** The PDFFormContainer class represents a container class for all the PDFForm objects attached to a PDFDocument.
+/** The PDFFormContainer class represents a container class for all the PDFFormApp objects attached to a PDFDocument.
  */
 @interface PDFFormContainer : NSObject <NSFastEnumeration>
 
 /** The parent PDFDocument.
  */
-@property (nonatomic, weak) PDFDocument *document;
+@property (nonatomic, weak) PDFDocumentApp *document;
 
 /**---------------------------------------------------------------------------------------
  * @name Creating a PDFFormContainer
  *  ---------------------------------------------------------------------------------------
  */
 /** Creates a new instance of PDFFormContainer
- @param parent The PDFDocument that owns the PDFFormContainer.
+ @param parent The PDFDocumentApp that owns the PDFFormContainer.
  @return A new PDFFormContainer object.
  */
-- (instancetype)initWithParentDocument:(PDFDocument *)parent NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithParentDocument:(PDFDocumentApp *)parent NS_DESIGNATED_INITIALIZER;
 
 /**---------------------------------------------------------------------------------------
  * @name Retrieving Forms

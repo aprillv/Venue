@@ -28,10 +28,10 @@
 #import "PDFNumber.h"
 #import "PDFNull.h"
 
-#import "PDFForm.h"
-#import "PDFPage.h"
-#import "PDFDocument.h"
-#import "PDFView.h"
+#import "PDFFormApp.h"
+#import "PDFPageApp.h"
+#import "PDFDocumentApp.h"
+#import "PDFViewApp.h"
 #import "PDFWidgetAnnotationView.h"
 #import "PDFUtility.h"
 

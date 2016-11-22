@@ -14,7 +14,7 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>Pods-Contract.xcscheme</key>
+		<key>Pods-Venue.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
@@ -27,7 +27,7 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>0097C7DCD1CCFA95BC0DDE64477FD252</key>
+		<key>28E877DD710D79A3DADD5F3272614647</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -37,7 +37,7 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>BB2B139C154D414085A7260E6FF89B04</key>
+		<key>D6255269A18CDFCA0759B34177A77DC6</key>
 		<dict>
 			<key>primary</key>
 			<true/>

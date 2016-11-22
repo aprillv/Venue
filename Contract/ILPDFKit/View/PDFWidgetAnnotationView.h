@@ -23,8 +23,8 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 @class PDFWidgetAnnotationView;
-@class PDFView;
-//#import "PDFForm.h"
+@class PDFViewApp;
+//#import "PDFFormApp.h"
 
 
 /** The PDFWidgetAnnotationViewDelegate responds to user interaction with a PDFWidgetAnnotationView.
@@ -44,24 +44,24 @@
 - (void)widgetAnnotationOptionsChanged:(PDFWidgetAnnotationView *)sender;
 @end
 
-/** The PDFWidgetAnnotationView represents a subview of a PDFView that represents an interactive or accessory element. A PDFForm is an example.
+/** The PDFWidgetAnnotationView represents a subview of a PDFView that represents an interactive or accessory element. A PDFFormApp is an example.
  */
 @interface PDFWidgetAnnotationView : UIView {
     CGFloat _zoomScale;
 }
 
 /** The value of the element.
- @discussion If there is an associated PDFForm to the view, then set of values are synced using key value observing.
+ @discussion If there is an associated PDFFormApp to the view, then set of values are synced using key value observing.
  */
 @property (nonatomic, strong) NSString *value;
 @property (nonatomic, strong) NSString *xname;
 @property (nonatomic, strong) NSString *pageno;
 @property (assign, nonatomic) CGFloat pagenomargin;
-//@property (retain, nonatomic) PDFForm * myform;
+//@property (retain, nonatomic) PDFFormApp * myform;
 //@property (nonatomic, strong) UIImage *value1;
 
 /** The options of the element.
- @discussion If there is an associated PDFForm to the view, then set of options are synced using key value observing.
+ @discussion If there is an associated PDFFormApp to the view, then set of options are synced using key value observing.
  */
 @property (nonatomic, strong) NSArray *options;
 
@@ -75,7 +75,7 @@
 
 /** The parent view.
  */
-@property (nonatomic, weak) PDFView *parentView;
+@property (nonatomic, weak) PDFViewApp *parentView;
 
 /**---------------------------------------------------------------------------------------
  * @name Updating Metrics

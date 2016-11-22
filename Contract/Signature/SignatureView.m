@@ -88,26 +88,20 @@
         
         NSString * xtitle;
         if ([self.xname hasSuffix:@"bottom1"]) {
-            xtitle = @"initialB1";
-            btn.frame = CGRectMake(0, 0, 64, 56);
+            xtitle = @"initialLicensee";
+            btn.frame = CGRectMake(0, 0, 94, 56);
 //            ct.origin.x -= ct.size.width/2.0;
-            ct.origin.y -= 12;
-        }else if([self.xname hasSuffix:@"bottom2"]){
-            xtitle = @"initialB2";
-            btn.frame = CGRectMake(0, 0, 64, 56);
-//            ct.origin.x -= ct.size.width/2.0;
-            ct.origin.y -= 12;
-        }else if([self.xname hasSuffix:@"bottom3"]
-                 || [self.xname isEqualToString:@"p1EBExhibitbp1sellerInitialSign"]
-                 || [self.xname hasSuffix:@"Sign3"]){
-            xtitle = @"initial";
-            btn.frame = CGRectMake(0, 0, 64, 44);
-        }else if([self.xname hasSuffix:@"buyer1Sign"]) {
-            xtitle = @"signB1";
+            //ct.origin.y -= 12;
+        
+        }else if([self.xname hasSuffix:@"bottom3"]){
+            xtitle = @"initialConsultant";
+            btn.frame = CGRectMake(0, 0, 94, 56);
+        }else if([self.xname hasSuffix:@"licenseeSign"]) {
+            xtitle = @"sLicensee";
             btn.frame = CGRectMake(0, 0, 94, 56);
             ct.origin.y -= 12;
-        }else if([self.xname hasSuffix:@"buyer2Sign"]) {
-            xtitle = @"signB2";
+        }else if([self.xname hasSuffix:@"sellerSign"]) {
+            xtitle = @"sConsultant";
             btn.frame = CGRectMake(0, 0, 94, 56);
             ct.origin.y -= 12;
         }else{
@@ -269,7 +263,24 @@
         
         [PopSignUtil getSignWithVC:nil withOk:^(UIView *image, BOOL isToAll) {
             
+//            for (SignatureView *other in self.pdfViewsssss.pdfWidgetAnnotationViews) {
+//                // ========
+//                 NSLog(@"11111111");
+//                NSLog(@"%@", other.xname);
+//            }
+//            for (SignatureView *other in self.pdfViewsssss.addedAnnotationViews) {
+//                //11111111
+//                 NSLog(@"========");
+//                NSLog(@"%@", other.xname);
+//            }
+//            for (SignatureView *other in self.pdfViewsssss.addedCCCCAnnotationViews) {
+//                //2222222
+//                NSLog(@"2222222");
+//                NSLog(@"%@", other.xname);
+//            }
+            
             SignatureView *sv = (SignatureView *)image;
+//            NSLog(@"%@",  self.pdfViewsssss.pdfWidgetAnnotationViews);
             
             if (sv.lineArray.count!=0) {
                [self.menubtn removeFromSuperview];
@@ -356,9 +367,18 @@
                 }
                 
             }else{
-                BOOL isBuyer1Initial = [self.xname hasSuffix:@"bottom1"] || [self.xname hasSuffix:@"Sign3"] || [self.xname isEqualToString:@"p1EBExhibitbp1sellerInitialSign"];
+//                BOOL isBuyer1Initial = [self.xname hasSuffix:@"bottom1"] || [self.xname hasSuffix:@"bottom3"];
                 
-                for (SignatureView *other in self.pdfViewsssss.pdfWidgetAnnotationViews) {
+                NSMutableArray *s = self.pdfViewsssss.pdfWidgetAnnotationViews;
+                s = [[s arrayByAddingObjectsFromArray:self.pdfViewsssss.addedCCCCAnnotationViews] mutableCopy];
+//                 NSLog(@"2222222");
+//                for (SignatureView *other in s) {
+//                    //2222222
+//                   
+//                    NSLog(@"%@", other.xname);
+//                }
+                
+                for (SignatureView *other in s) {
                     if (other == self) {
                         continue;
                     }
@@ -366,7 +386,10 @@
                         if (other.LineWidth > 0) {
                             continue;
                         }
-                        if ([other.xname hasSuffix: [self.xname substringFromIndex:(self.xname.length - 7)] ] || (isBuyer1Initial && ([other.xname hasSuffix:@"Sign3"] || [other.xname hasSuffix:@"bottom1"] || [other.xname isEqualToString:@"p1EBExhibitbp1sellerInitialSign"]))){
+                        if (([other.xname hasSuffix:@"bottom1"]
+                            && [self.xname hasSuffix:@"bottom1"])
+                            || ([other.xname hasSuffix:@"bottom3"]
+                            && [self.xname hasSuffix:@"bottom3"])){
                             
                             CGRect ct = other.frame;
                             other.frame = sv.frame;
@@ -374,7 +397,7 @@
                             other.lineArray = sv.lineArray;
                             other.originHeight =sv.originHeight;
                             other.originWidth = sv.originWidth;
-                            if (isToAll && ![other.xname isEqualToString:@"p1EBExhibitbp1sellerInitialSign"]) {
+                            if (isToAll) {
                                 other.LineWidth = sv.LineWidth;
                                 if (sv.lineArray.count!=0) {
                                     [other.menubtn removeFromSuperview];
@@ -395,7 +418,7 @@
             [PopSignUtil closePop];
         } withCancel:^{
             [PopSignUtil closePop];
-        } showAll:(![self.xname isEqualToString:@"p1EBExhibitbp1sellerInitialSign"]) withTitle:xtitle withLineArray:self.lineArray];
+        } showAll:(![self.xname hasSuffix:@"Sign"]) withTitle:xtitle withLineArray:self.lineArray];
 //    }
     
     

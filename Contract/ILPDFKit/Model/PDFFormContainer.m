@@ -24,14 +24,14 @@
 #import "PDFFormContainer.h"
 
 @interface PDFFormContainer(Private)
-- (void)populateNameTreeNode:(NSMutableDictionary *)node withComponents:(NSArray *)components final:(PDFForm *)final;
+- (void)populateNameTreeNode:(NSMutableDictionary *)node withComponents:(NSArray *)components final:(PDFFormApp *)final;
 - (NSArray *)formsDescendingFromTreeNode:(NSDictionary *)node;
 - (void)applyAnnotationTypeLeafToForms:(PDFDictionary *)leaf parent:(PDFDictionary *)parent pageMap:(NSDictionary *)pmap;
 - (void)enumerateFields:(PDFDictionary *)fieldDict pageMap:(NSDictionary *)pmap;
 - (NSArray *)allForms;
 - (NSString *)formXMLForFormsWithRootNode:(NSDictionary *)node;
-- (void)addForm:(PDFForm *)form;
-- (void)removeForm:(PDFForm *)form;
+- (void)addForm:(PDFFormApp *)form;
+- (void)removeForm:(PDFFormApp *)form;
 @end
 
 @implementation PDFFormContainer {
@@ -44,14 +44,14 @@
 - (instancetype)init{
     return [self initWithParentDocument:nil];
 }
-- (instancetype)initWithParentDocument:(PDFDocument *)parent {
+- (instancetype)initWithParentDocument:(PDFDocumentApp *)parent {
     self = [super init];
     if (self != nil) {
         _allForms = [[NSMutableArray alloc] init];
         _nameTree = [[NSMutableDictionary alloc] init];
         _document = parent;
         NSMutableDictionary *pmap = [NSMutableDictionary dictionary];
-        for (PDFPage *page in _document.pages) {
+        for (PDFPageApp *page in _document.pages) {
             pmap[@((NSUInteger)(page.dictionary.dict))] = @(page.pageNumber);
         }
         for (PDFDictionary *field in _document.catalog[@"AcroForm"][@"Fields"]) {
@@ -84,7 +84,7 @@
 
 - (NSArray *)formsWithType:(PDFFormType)type {
     NSMutableArray *temp = [NSMutableArray array];
-    for (PDFForm *form in [self allForms]) {
+    for (PDFFormApp *form in [self allForms]) {
         if (form.formType == type) {
             [temp addObject:form];
         }
@@ -98,12 +98,12 @@
 
 #pragma mark - Adding and Removing Forms
 
-- (void)addForm:(PDFForm *)form {
+- (void)addForm:(PDFFormApp *)form {
     [_allForms addObject:form];
     [self populateNameTreeNode:_nameTree withComponents:[form.name componentsSeparatedByString:@"."] final:form];
 }
 
-- (void)removeForm:(PDFForm *)form {
+- (void)removeForm:(PDFFormApp *)form {
     [_allForms removeObject:form];
     id current = _nameTree;
     NSArray *comps = [form.name componentsSeparatedByString:@"."];
@@ -133,7 +133,7 @@
     NSUInteger targ = (NSUInteger)(((PDFDictionary *)(leaf[@"P"])).dict);
     leaf.parent = parent;
     NSUInteger index = targ ? ([pmap[@(targ)] unsignedIntegerValue] - 1):0;
-    PDFForm *form = [[PDFForm alloc] initWithFieldDictionary:leaf page:_document.pages[index] parent:self];
+    PDFFormApp *form = [[PDFFormApp alloc] initWithFieldDictionary:leaf page:_document.pages[index] parent:self];
     [self addForm:form];
 }
 
@@ -151,7 +151,7 @@
 }
 
 
-- (void)populateNameTreeNode:(NSMutableDictionary *)node withComponents:(NSArray *)components final:(PDFForm *)final {
+- (void)populateNameTreeNode:(NSMutableDictionary *)node withComponents:(NSArray *)components final:(PDFFormApp *)final {
     NSString *base = components[0];
     if ([components count] == 1) {
         NSMutableArray *arr = node[base];
@@ -174,7 +174,7 @@
 #pragma mark - Form Value Setting
 
 - (void)setValue:(NSString *)val forFormWithName:(NSString *)name {
-    for (PDFForm *form in [self formsWithName:name]) {
+    for (PDFFormApp *form in [self formsWithName:name]) {
         if (((![form.value isEqualToString:val]) && (form.value != nil || val != nil))) {
             form.value = val;
         }
@@ -196,7 +196,7 @@
     for (NSString *key in [node allKeys]) {
         id obj = node[key];
         if ([obj isKindOfClass:[NSMutableArray class]]) {
-            PDFForm *form = (PDFForm *)[obj lastObject];
+            PDFFormApp *form = (PDFFormApp *)[obj lastObject];
             if ([form.value length])[ret appendFormat:@"\r<%@>%@</%@>",key,[PDFUtility encodeStringForXML: form.value],key];
         } else {
             NSString *val = [self formXMLForFormsWithRootNode:obj];
@@ -216,14 +216,14 @@
 
 - (NSArray *)createWidgetAnnotationViewsForSuperviewWithWidth:(CGFloat)width margin:(CGFloat)margin hMargin:(CGFloat)hmargin  pageMargin:(CGFloat)pageMargin{
     NSMutableArray *ret = [[NSMutableArray alloc] init];
-    for (PDFForm *form in self) {
+    for (PDFFormApp *form in self) {
         if (form.formType == PDFFormTypeChoice) continue;
         id add = [form createWidgetAnnotationViewForSuperviewWithWidth:width xMargin:margin yMargin:hmargin pageMargin:pageMargin];
         if (add) [ret addObject:add];
     }
     NSMutableArray *temp = [[NSMutableArray alloc] init];
     //We keep choice fileds on top.
-    for (PDFForm *form in [self formsWithType:PDFFormTypeChoice]) {
+    for (PDFFormApp *form in [self formsWithType:PDFFormTypeChoice]) {
         id add = [form createWidgetAnnotationViewForSuperviewWithWidth:width xMargin:margin yMargin:hmargin pageMargin:pageMargin];
         if(add) [temp addObject:add];
     }

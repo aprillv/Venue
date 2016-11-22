@@ -120,7 +120,7 @@ class SetDotValue : NSObject {
         return "contract1pdf_" + pdfInfo!.idcity! + "_" + pdfInfo!.idcia!
     }
     
-    func setSignContractDots(pdfInfo:ContractSignature?, additionViews: [PDFWidgetAnnotationView], pdfview: PDFView, item: ContractsItem?){
+    func setSignContractDots(pdfInfo:ContractSignature?, additionViews: [PDFWidgetAnnotationView], pdfview: PDFViewApp, item: ContractsItem?){
 //        print("first")
 //        if let filedsFromTxt = readContractFieldsFromTxt(getFileName(pdfInfo)) {
 //            
@@ -623,7 +623,7 @@ class SetDotValue : NSObject {
         static let Amount = "txtAmount"
     }
     
-    func setCloingMemoDots(pdfInfo: ContractClosingMemo?, additionViews: [PDFWidgetAnnotationView], pdfview: PDFView) ->[PDFWidgetAnnotationView]{
+    func setCloingMemoDots(pdfInfo: ContractClosingMemo?, additionViews: [PDFWidgetAnnotationView], pdfview: PDFViewApp) ->[PDFWidgetAnnotationView]{
         var bankField : PDFFormTextField?
         var checkField : PDFFormTextField?
         var typeField : PDFFormTextField?
@@ -876,7 +876,7 @@ class SetDotValue : NSObject {
         
     }
     
-    func setAddendumCDots(pdfInfo: ContractAddendumC?, additionViews: [PDFWidgetAnnotationView], pdfview: PDFView, has2Pages0: Bool) -> [PDFWidgetAnnotationView]{
+    func setAddendumCDots(pdfInfo: ContractAddendumC?, additionViews: [PDFWidgetAnnotationView], pdfview: PDFViewApp, has2Pages0: Bool) -> [PDFWidgetAnnotationView]{
         var aPrice : PDFFormTextField?
         var aPrice2 : PDFFormTextField?
         var aPrice3 : PDFFormTextField?
@@ -1459,7 +1459,7 @@ class SetDotValue : NSObject {
         static let Version = "version"
     }
     
-    func setBuyersExpectDots(pdfInfo: AddendumA?, additionViews: [PDFWidgetAnnotationView], pdfview: PDFView){
+    func setBuyersExpectDots(pdfInfo: AddendumA?, additionViews: [PDFWidgetAnnotationView], pdfview: PDFViewApp){
         for pv : PDFWidgetAnnotationView in additionViews{
             switch pv.xname {
             case BuyersExpectPDFFields.CompanyName:

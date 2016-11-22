@@ -9,7 +9,7 @@ import UIKit
 import Alamofire
 import MBProgressHUD
 
-class ContractListViewController: UITableViewController, UISearchBarDelegate{
+class ContractListViewController: UITableViewController, UISearchBarDelegate, NDHTMLtoPDFDelegate{
     @IBOutlet var viewHeight: NSLayoutConstraint!{
         didSet{
             viewHeight.constant = 1.0 / UIScreen.mainScreen().scale
@@ -119,6 +119,13 @@ class ContractListViewController: UITableViewController, UISearchBarDelegate{
         static let CellIdentifier : String = "Contracts Cell Identifier"
         static let DraftCellIdentifier : String = "Events2 Cell Identifier"
         
+        static let HtmlStart0 = "<p style=\"text-align:center;font-family:'Calibri';font:10pt Helvetica,sans-serif;margin:30px 0 0 0;\"><strong>EXHIBIT A</strong></p><p style=\"text-align:center;font-family:'Calibri';font:10pt Helvetica,sans-serif;margin:0;\"><strong>VENUE/EVENT INFORMATION</strong></p><div style=\"height: 915px;font:10pt Helvetica,sans-serif;margin:15px 30px 0 30px;\">"
+        
+        static let HtmlCenter0 = "</div><p style=\"text-align:center;font-family:'Calibri';font:10pt Helvetica,sans-serif;margin:0 0 0 0;\"><strong>EXHIBIT B</strong></p><p style=\"text-align:center;font-family:'Calibri';font:10pt Helvetica,sans-serif;margin:0;\"><strong>ADDITIONAL PROVISIONS</strong></p><div style=\"height: 865px;font:10pt Helvetica,sans-serif;margin:15px 30px 0;\">"
+        
+        static let HtmlEnd0 = "</div>"
+        
+        
     }
     
     
@@ -178,27 +185,6 @@ class ContractListViewController: UITableViewController, UISearchBarDelegate{
             
         }
         
-        
-        
-        
-        //        }else{
-        //            cell = tableView.dequeueReusableCellWithIdentifier(constants.DraftCellIdentifier, forIndexPath: indexPath)
-        ////            cell.separatorInset = UIEdgeInsetsZero
-        ////            cell.layoutMargins = UIEdgeInsetsZero
-        //            cell.preservesSuperviewLayoutMargins = false
-        //            if let cellitem = cell as? AddressDraftListViewCell {
-        //                let ddd = CiaNmArray?[CiaNm?[indexPath.section] ?? ""]
-        //                cellitem.contractInfo = ddd![indexPath.row]
-        //            }
-        //        }
-        //        if let indexa = tableView.indexPathForSelectedRow{
-        //            if indexa == indexPath{
-        //                cell.contentView.backgroundColor = CConstants.SearchBarBackColor
-        //            }else{
-        //                cell.contentView.backgroundColor = UIColor.whiteColor()
-        //            }
-        //        }
-        
         return cell
         
     }
@@ -214,115 +200,18 @@ class ContractListViewController: UITableViewController, UISearchBarDelegate{
     
     func GoToPrint(modelNm: [String]) {
         self.filesNms = modelNm
-        //        self.filesNms = ["Addendum C"]
-        //        if modelNm.count == 1 {
-        //            callService(modelNm)
-        //        }else{
-        //            if modelNm.contains(CConstants.ActionTitleAddendumC){
-        //                callService(modelNm)
-        //            }else{
-        //                self.performSegueWithIdentifier(CConstants.SegueToPrintPdf, sender: modelNm)
-        //            }
-        //        }
+        
         
         
         
     }
     
-    // go to print Addendum C signature
-    //    private func doAddendumCAction(_ : UIAlertAction) -> Void {
-    //        callService(CConstants.AddendumCServiceURL)
-    //    }
-    //    // go to print ClosingMemo
-    //    private func doClosingMemoAction(_ : UIAlertAction) -> Void {
-    //        callService(CConstants.ClosingMemoServiceURL)
-    //    }
-    //    // go to print DesignCenter
-    //    private func doDesignCenterAction(_ : UIAlertAction) -> Void {
-    //        callService(CConstants.DesignCenterServiceURL)
-    //    }
-    //    // go to print Contract signature
-    //    private func doContractAction(_ : UIAlertAction) -> Void {
-    //        callService(CConstants.ContractServiceURL)
-    //    }
-    //    private func doThirdPartyFinancingAddendumAction(_: UIAlertAction) -> Void{
-    //        callService(CConstants.AddendumAServiceURL)
-    //    }
-    
-    @IBOutlet var filterItem: UIBarButtonItem!
-    
-    //    private func callService(printModelNms: [String]){
-    //        var serviceUrl: String?
-    //        var printModelNm : String
-    //        if printModelNms.count == 1 {
-    //            printModelNm = printModelNms[0]
-    //        }else{
-    //            printModelNm = CConstants.ActionTitleAddendumC
-    //        }
-    //        switch printModelNm{
-    //        case CConstants.ActionTitleAddendumC:
-    //            serviceUrl = CConstants.AddendumCServiceURL
-    //        default:
-    //            serviceUrl = CConstants.AddendumAServiceURL
-    //        }
-    //
-    //
-    //        if let indexPath = tableView.indexPathForSelectedRow {
-    //            let ddd = self.CiaNmArray?[self.CiaNm?[indexPath.section] ?? ""]
-    //            let item: ContractsItem = ddd![indexPath.row]
-    //
-    ////            print(ContractRequestItem(contractInfo: item).DictionaryFromObject())
-    //            let hud = MBProgressHUD.showHUDAddedTo(UIApplication.sharedApplication().keyWindow, animated: true)
-    //            //                hud.mode = .AnnularDeterminate
-    //            hud.labelText = CConstants.RequestMsg
-    //            Alamofire.request(.POST,
-    //                CConstants.ServerURL + serviceUrl!,
-    //                parameters: ContractRequestItem(contractInfo: item).DictionaryFromObject()).responseJSON{ (response) -> Void in
-    //                    hud.hide(true)
-    ////                    print(ContractRequestItem(contractInfo: item).DictionaryFromObject())
-    //                        if response.result.isSuccess {
-    //
-    //                            if let rtnValue = response.result.value as? [String: AnyObject]{
-    //                                if let msg = rtnValue["message"] as? String{
-    //                                    if msg.isEmpty{
-    //                                        switch printModelNm {
-    //                                        case CConstants.ActionTitleAddendumC:
-    ////                                            if printModelNms.count == 1 {
-    ////                                                let rtn = ContractAddendumC(dicInfo: rtnValue)
-    ////                                                self.performSegueWithIdentifier(CConstants.SegueToAddendumC, sender: rtn)
-    ////                                            }else{
-    ////                                            print(response.result.value)
-    //                                                let rtn = ContractAddendumC(dicInfo: rtnValue)
-    //                                                self.performSegueWithIdentifier(CConstants.SegueToPrintPdf, sender: rtn)
-    ////                                            }
-    //                                        default:
-    //                                            self.tableView.deselectRowAtIndexPath(indexPath, animated: true)
-    //                                        }
-    //
-    //
-    //                                    }else{
-    //                                        self.tableView.deselectRowAtIndexPath(indexPath, animated: true)
-    //                                        self.PopMsgWithJustOK(msg: msg)
-    //                                    }
-    //                                }else{
-    //                                    self.tableView.deselectRowAtIndexPath(indexPath, animated: true)
-    //                                    self.PopMsgWithJustOK(msg: CConstants.MsgServerError)
-    //                                }
-    //                            }else{
-    //                                self.tableView.deselectRowAtIndexPath(indexPath, animated: true)
-    //                                self.PopMsgWithJustOK(msg: CConstants.MsgServerError)
-    //                            }
-    //                        }else{
-    //                            self.tableView.deselectRowAtIndexPath(indexPath, animated: true)
-    ////                            self.spinner?.stopAnimating()
-    //                            self.PopMsgWithJustOK(msg: CConstants.MsgNetworkError)
-    //                        }
-    //                    }
-    //
-    //
-    //        }
-    //    }
-    
+    @IBOutlet var filterItem: UIBarButtonItem!{
+        didSet{
+            filterItem.image = nil
+            filterItem.title = ""
+        }
+    }
     
         override func tableView(tableView: UITableView, didHighlightRowAtIndexPath indexPath: NSIndexPath) {
             removebackFromCell()
@@ -356,7 +245,8 @@ class ContractListViewController: UITableViewController, UISearchBarDelegate{
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
                 removebackFromCell()
         let item = self.EventList![indexPath.row]
-        self.performSegueWithIdentifier(CConstants.SegueToPrintContract, sender: item.idcontract)
+        self.getSignature(item.idcontract ?? "")
+//
         //        if let selectedCell:UITableViewCell = tableView.cellForRowAtIndexPath(indexPath){
         //            lastSelectedIndexPath = indexPath
         //            selectedCell.contentView.backgroundColor = CConstants.SearchBarBackColor
@@ -421,7 +311,9 @@ class ContractListViewController: UITableViewController, UISearchBarDelegate{
                     switch identifier {
                     case CConstants.SegueToPrintContract:
                         if let con = segue.destinationViewController as? PDFPrintViewController {
-                            con.idContract = sender as? String
+                            con.ContractData = sender as? ContractDetail
+                            con.idContract = con.ContractData?.idcontract
+                            con.pdfPath = self.pdfPath
                         }
                      default:
                                     break;
@@ -674,6 +566,66 @@ class ContractListViewController: UITableViewController, UISearchBarDelegate{
             }
         }
     }
+    
+    func getSignature(idcontract : String){
+        //        print(["idcontract1" : self.contractInfo!.idnumber!])
+        let userInfo = NSUserDefaults.standardUserDefaults()
+        let email = userInfo.valueForKey(CConstants.UserInfoEmail) as? String ?? ""
+        let password = userInfo.valueForKey(CConstants.UserInfoPwd) as? String ?? ""
+        
+        Alamofire.request(.POST,
+            CConstants.ServerURL + CConstants.ContractDetailServiceURL,
+            parameters: ["email" :email, "password" : password, "idcontract" : idcontract]).responseJSON{ (response) -> Void in
+                //                hud.hide(true)
+                if response.result.isSuccess {
+                    // print(response.result.value)
+                    if let rtnValue = response.result.value as? [String: AnyObject]{
+                        //                       print(rtnValue)
+                        let contractItem = ContractDetail(dicInfo: rtnValue)
+                        self.contractItem = contractItem
+                        if contractItem.exhibita != "" || contractItem.exhibitb != ""{
+//                            self.PDFCreator = [NDHTMLtoPDF createPDFWithHTML:@"<p style=\"text-align:center;font:10pt Helvetica,sans-serif;margin:30px 0 0 0;\"><strong>EXHIBIT A</strong></p><p style=\"text-align:center;font:10pt Helvetica,sans-serif;margin:0;\"><strong>VENUE/EVENT INFORMATION</strong></p><div style=\"height: 915px;font:10pt Helvetica,sans-serif;margin:15px 30px 0 30px;\"></div><p style=\"text-align:center;font:10pt Helvetica,sans-serif;margin:0 0 0 0;\"><strong>EXHIBIT B</strong></p><p style=\"text-align:center;font:10pt Helvetica,sans-serif;margin:0;\"><strong>VENUE/EVENT INFORMATION</strong></p><div style=\"height: 865px;font:10pt Helvetica,sans-serif;margin:15px 30px 0;\"></div>"
+//                            pathForPDF:[@"~/Documents/delegateDemo.pdf" stringByExpandingTildeInPath]
+//                            delegate:self
+//                            pageSize:kPaperSizeLetter
+//                            margins:UIEdgeInsetsMake(10, 5, 10, 5)];
+                            let s : String = constants.HtmlStart0 + (contractItem.exhibita ?? "") + constants.HtmlCenter0 + (contractItem.exhibitb ?? "") + constants.HtmlEnd0
+                            
+                            let d : NSString = "~/Documents/delegateDemo.pdf"
+//                            print(d.stringByExpandingTildeInPath);
+                            self.pdfPath = d.stringByExpandingTildeInPath
+                            self.pdfCreator = NDHTMLtoPDF.createPDFWithHTML(s, pathForPDF: d.stringByExpandingTildeInPath, delegate: self, pageSize: CGSizeMake(612,792), margins: UIEdgeInsetsMake(10, 5, 10, 5)) as? NDHTMLtoPDF
+                        }else{
+                            self.pdfPath = nil
+                            self.performSegueWithIdentifier(CConstants.SegueToPrintContract, sender: contractItem)
+                        }
+                        
+                    }else{
+                        self.PopMsgWithJustOK(msg: CConstants.MsgServerError)
+                    }
+                }else{
+                    self.PopMsgWithJustOK(msg: CConstants.MsgNetworkError)
+                }
+        }
+        
+    }
+    
+    var pdfCreator : NDHTMLtoPDF?
+    
+    var pdfPath : String?
+    var contractItem : ContractDetail?
+    
+    func HTMLtoPDFDidSucceed(htmlToPDF: NDHTMLtoPDF!) {
+//        print(htmlToPDF.PDFpath)
+//        pdfPath = htmlToPDF.PDFpath
+        self.performSegueWithIdentifier(CConstants.SegueToPrintContract, sender: contractItem)
+    }
+    
+    func HTMLtoPDFDidFail(htmlToPDF: NDHTMLtoPDF!) {
+        pdfPath = nil
+        self.performSegueWithIdentifier(CConstants.SegueToPrintContract, sender: contractItem)
+    }
+    
     
 }
 
